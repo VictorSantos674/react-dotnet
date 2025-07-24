@@ -13,5 +13,6 @@ namespace Entities.Entities
         [Column("nome")]
         [Required]
         public string Nome { get; set; }
+        
     }
 }
