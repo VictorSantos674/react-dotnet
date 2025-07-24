@@ -22,11 +22,54 @@ namespace WebApis.Controllers
             return Ok(produtos);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Produto>> GetProdutoById(int id)
+        {
+            var produto = await _produtoService.GetProdutoByIdAsync(id);
+            if (produto == null)
+                return NotFound();
+
+            return Ok(produto);
+        }
+
+        [HttpGet("ListarTodos")]
+        public async Task<ActionResult<List<Produto>>> GetAllProdutos()
+        {
+            var produtos = await _produtoService.GetAllProdutosAsync();
+            return Ok(produtos);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] Produto produto)
         {
             await _produtoService.AddProdutoAsync(produto);
             return CreatedAtAction(nameof(Get), new { id = produto.Id }, produto);
         }
+        
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateProduto(int id, [FromBody] Produto produto)
+        {
+            if (id != produto.Id)
+            {
+                return BadRequest("ID na URL não corresponde ao ID do produto.");
+            }
+
+            await _produtoService.UpdateProdutoAsync(produto);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteProduto(int id)
+        {
+            var produto = await _produtoService.GetProdutoByIdAsync(id);
+            if (produto == null)
+            {
+                return NotFound("Produto não encontrado.");
+            }
+
+            await _produtoService.DeleteProdutoAsync(produto);
+            return NoContent();
+        }
+
     }
 }
