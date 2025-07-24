@@ -21,5 +21,30 @@ namespace Domain.Services
         {
             return await _produtoRepository.GetAll();
         }
+
+        public async Task UpdateProdutoAsync(Produto produto)
+        {
+            await _produtoRepository.Update(produto);
+        }
+
+        public async Task DeleteProdutoAsync(Produto produto)
+        {
+            await _produtoRepository.Delete(produto);
+        }
+
+        public async Task<Produto> GetProdutoByIdAsync(int id)
+        {
+            return await _produtoRepository.GetEntityById(id);
+        }
+
+        public async Task<List<Produto>> GetAllProdutosAsync()
+        {
+            return await _produtoRepository.GetList();
+        }
+
+        public async Task<(List<Produto> itens, int total)> GetPagedList(int pageNumber, int pageSize, string searchTerm, string searchProperty, string orderByProperty, bool isAscending)
+        {
+            return await _produtoRepository.GetPagedList(pageNumber, pageSize, searchTerm, searchProperty, orderByProperty, isAscending);
+        }
     }
 }
