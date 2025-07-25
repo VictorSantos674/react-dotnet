@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import router from "./routes";
 import Navbar from "./components/Navbar";
+import './index.css';
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
