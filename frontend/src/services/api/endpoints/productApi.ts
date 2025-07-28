@@ -1,41 +1,40 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { Product } from '@/types/Product';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import type { Product } from "@/types/Product";
 
 export const productApi = createApi({
-  reducerPath: 'productApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/api/' }),
-  tagTypes: ['Product'],
+  reducerPath: "productApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/products" }),
+  tagTypes: ["Product"],
   endpoints: (builder) => ({
     getAllProducts: builder.query<Product[], void>({
-      query: () => 'produto',
-      providesTags: ['Product'],
+      query: () => "",
+      providesTags: ["Product"],
     }),
     getProductById: builder.query<Product, number>({
-      query: (id) => `produto/${id}`,
-      providesTags: ['Product'],
+      query: (id) => `/${id}`,
     }),
-    addProduct: builder.mutation<void, Product>({
+    addProduct: builder.mutation<void, Partial<Product>>({
       query: (product) => ({
-        url: 'produto',
-        method: 'POST',
+        url: "",
+        method: "POST",
         body: product,
       }),
-      invalidatesTags: ['Product'],
-    }),
-    updateProduct: builder.mutation<void, Product>({
-      query: (product) => ({
-        url: `produto/${product.id}`,
-        method: 'PUT',
-        body: product,
-      }),
-      invalidatesTags: ['Product'],
+      invalidatesTags: ["Product"],
     }),
     deleteProduct: builder.mutation<void, number>({
       query: (id) => ({
-        url: `produto/${id}`,
-        method: 'DELETE',
+        url: `/${id}`,
+        method: "DELETE",
       }),
-      invalidatesTags: ['Product'],
+      invalidatesTags: ["Product"],
+    }),
+    updateProduct: builder.mutation<void, Product>({
+      query: ({ id, ...rest }) => ({
+        url: `/${id}`,
+        method: "PUT",
+        body: rest,
+      }),
+      invalidatesTags: ["Product"],
     }),
   }),
 });
@@ -44,6 +43,6 @@ export const {
   useGetAllProductsQuery,
   useGetProductByIdQuery,
   useAddProductMutation,
-  useUpdateProductMutation,
   useDeleteProductMutation,
+  useUpdateProductMutation,
 } = productApi;
