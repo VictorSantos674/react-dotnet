@@ -3,6 +3,7 @@ import Home from "../pages/Home";
 import About from "../pages/About";
 import Produto from "../pages/Produto";
 import Produtos  from "../pages/Produtos";
+import EditarProduto from "@/pages/EditarProduto";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/produtos",
     element: <Produtos />,
+  },
+  { 
+    path: "/editar/:id",
+    element: <EditarProduto />,
   },
 ]);
 
