@@ -8,6 +8,7 @@ import router from "./routes";
 import Navbar from "./components/Navbar";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
+import 'antd/dist/reset.css';
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
