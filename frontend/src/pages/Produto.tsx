@@ -1,6 +1,6 @@
 import { useAddProductMutation } from '@/services/api/endpoints/productApi';
 import ProductForm from '@/components/ProductForm';
-import { ProductFormValues } from '@/validations/productSchema';
+import type { ProductFormValues } from '@/validations/productFormSchema';
 import { message, Typography } from 'antd';
 
 export default function Produto() {
