@@ -5,3 +5,5 @@ export const productFormSchema = z.object({
   preco: z.number().min(0.01, 'Preço deve ser maior que zero'),
   descricao: z.string().min(1, 'Descrição obrigatória'),
 });
+
+export type ProductFormValues = z.infer<typeof productFormSchema>;
