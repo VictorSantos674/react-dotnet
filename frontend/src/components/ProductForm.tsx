@@ -15,7 +15,6 @@ export default function ProductForm({ onSubmit, loading = false, defaultValues }
     handleSubmit,
     register,
     formState: { errors },
-    setValue,
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
     defaultValues: defaultValues || {},
