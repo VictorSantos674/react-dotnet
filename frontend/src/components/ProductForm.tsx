@@ -7,9 +7,10 @@ import type { ProductFormValues } from '@/validations/productFormSchema';
 type ProductFormProps = {
   onSubmit: (data: ProductFormValues) => void;
   loading: boolean;
+  defaultValues?: ProductFormValues; 
 };
 
-export default function ProductForm({ onSubmit, loading }: ProductFormProps) {
+export default function ProductForm({ onSubmit, loading, defaultValues }: ProductFormProps) {
   const {
     register,
     handleSubmit,
@@ -17,6 +18,7 @@ export default function ProductForm({ onSubmit, loading }: ProductFormProps) {
     reset,
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
+    defaultValues,
   });
 
   const internalSubmit = (data: ProductFormValues) => {
