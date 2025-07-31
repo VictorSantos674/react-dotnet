@@ -1,13 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Form, Input, InputNumber } from 'antd';
 import { useForm } from 'react-hook-form';
-import { productFormSchema } from '@/validations/productFormSchema';
-import type { ProductFormValues } from '@/validations/productFormSchema';
+import { productFormSchema, type ProductFormValues } from '@/validations/productFormSchema';
 
 type ProductFormProps = {
   onSubmit: (data: ProductFormValues) => void;
   loading: boolean;
   defaultValues?: ProductFormValues; 
+  submitText?: string;
 };
 
 export default function ProductForm({ onSubmit, loading, defaultValues }: ProductFormProps) {

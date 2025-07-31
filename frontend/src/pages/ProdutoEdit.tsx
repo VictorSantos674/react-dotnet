@@ -52,7 +52,6 @@ export default function ProdutoEdit() {
     );
   }
 
-  // Pré-preenchimento dos campos
   setValue('nome', product.nome);
   setValue('preco', product.preco);
   setValue('descricao', product.descricao);
