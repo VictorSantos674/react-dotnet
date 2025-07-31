@@ -1,55 +1,86 @@
 import { useDeleteProductMutation, useGetAllProductsQuery } from '@/services/api/endpoints/productApi';
-import { Table, Button, Space, message, Popconfirm, Spin } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-import { useNavigate } from 'react-router-dom';
 import type { Product } from '@/types/Product';
+import { Table, Button, Popconfirm, message, Space, Typography, Spin, Alert } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const { Title } = Typography;
 
 export default function ProdutoList() {
-  const navigate = useNavigate();
-  const { data: products = [], isLoading, isError } = useGetAllProductsQuery();
+  const { data: products, isLoading, isError, error, refetch } = useGetAllProductsQuery();
   const [deleteProduct] = useDeleteProductMutation();
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const handleDelete = async (id: number) => {
     try {
-      message.loading({ content: 'Removendo produto...', key: 'delete' });
+      setDeletingId(id);
       await deleteProduct(id).unwrap();
-      message.success({ content: 'Produto removido com sucesso!', key: 'delete' });
-    } catch {
-      message.error({ content: 'Erro ao remover produto', key: 'delete' });
+      message.success('Produto excluído com sucesso!');
+      refetch();
+    } catch (err) {
+      console.error(err);
+      message.error('Erro ao excluir o produto.');
+    } finally {
+      setDeletingId(null);
     }
   };
 
   const columns: ColumnsType<Product> = [
-    { title: 'ID', dataIndex: 'id', key: 'id' },
     { title: 'Nome', dataIndex: 'nome', key: 'nome' },
     { title: 'Preço', dataIndex: 'preco', key: 'preco' },
     { title: 'Descrição', dataIndex: 'descricao', key: 'descricao' },
     {
       title: 'Ações',
-      key: 'actions',
+      key: 'acoes',
       render: (_, record) => (
         <Space>
-          <Button onClick={() => navigate(`/editar-produto/${record.id}`)}>Editar</Button>
+          <Button type="link" onClick={() => navigate(`/produtos/editar/${record.id}`)}>
+            Editar
+          </Button>
           <Popconfirm
             title="Tem certeza que deseja excluir este produto?"
-            onConfirm={() => record.id !== undefined && handleDelete(record.id)}
+            onConfirm={() => handleDelete(record.id!)}
             okText="Sim"
             cancelText="Não"
           >
-            <Button danger>Excluir</Button>
+            <Button type="link" danger loading={deletingId === record.id}>
+              Excluir
+            </Button>
           </Popconfirm>
         </Space>
       ),
     },
   ];
 
-  if (isLoading) return <Spin tip="Carregando produtos..." />;
-  if (isError) return <p>Erro ao carregar produtos.</p>;
-
   return (
-    <div>
-      <h2>Lista de Produtos</h2>
-      <Table columns={columns} dataSource={products} rowKey="id" />
+    <div style={{ padding: '1rem' }}>
+      <Space style={{ marginBottom: '1rem', justifyContent: 'space-between', width: '100%' }}>
+        <Title level={3}>Lista de Produtos</Title>
+        <Button type="primary" onClick={() => navigate('/produtos/novo')}>
+          Novo Produto
+        </Button>
+      </Space>
+
+      {isLoading ? (
+        <Spin tip="Carregando produtos..." />
+      ) : isError ? (
+        <Alert
+          message="Erro ao carregar produtos"
+          description={(error as any)?.data?.message || 'Tente novamente mais tarde.'}
+          type="error"
+          showIcon
+        />
+      ) : (
+        <Table
+          dataSource={products}
+          columns={columns}
+          rowKey="id"
+          scroll={{ x: true }}
+          pagination={{ pageSize: 10 }}
+        />
+      )}
     </div>
   );
 }
