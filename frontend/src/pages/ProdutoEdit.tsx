@@ -1,30 +1,44 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useGetProductByIdQuery, useUpdateProductMutation } from '@/services/api/endpoints/productApi';
-import { message, Spin } from 'antd';
-import ProductForm from '@/components/ProductForm';
-import type { ProductFormValues } from '@/validations/productFormSchema';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  useGetProductByIdQuery,
+  useUpdateProductMutation
+} from '@/services/api/endpoints/productApi';
+import { productFormSchema, type ProductFormValues } from '@/validations/productFormSchema';
+import { Form, Input, InputNumber, Button, Typography, Spin, message } from 'antd';
 
-export default function EditarProduto() {
+const { Title } = Typography;
+
+export default function ProdutoEdit() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data: product, isLoading, isError } = useGetProductByIdQuery(Number(id));
-  const [updateProduct] = useUpdateProductMutation();
+  const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
 
-  const handleSubmit = async (values: ProductFormValues) => {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors }
+  } = useForm<ProductFormValues>({
+    resolver: zodResolver(productFormSchema)
+  });
+
+  const onSubmit = async (data: ProductFormValues) => {
     try {
-      message.loading({ content: 'Atualizando produto...', key: 'update' });
-      await updateProduct({ id: Number(id), ...values }).unwrap();
-      message.success({ content: 'Produto atualizado com sucesso!', key: 'update' });
+      await updateProduct({ id: Number(id), ...data }).unwrap();
+      message.success('Produto atualizado com sucesso!');
       navigate('/produtos');
     } catch (err) {
       console.error(err);
-      message.error({ content: 'Erro ao atualizar produto', key: 'update' });
+      message.error('Erro ao atualizar o produto.');
     }
   };
 
   if (isLoading) {
     return (
-      <div style={{ textAlign: 'center', marginTop: 50 }}>
+      <div style={{ textAlign: 'center', padding: '2rem' }}>
         <Spin size="large" tip="Carregando produto..." />
       </div>
     );
@@ -32,20 +46,51 @@ export default function EditarProduto() {
 
   if (isError || !product) {
     return (
-      <div style={{ textAlign: 'center', marginTop: 50 }}>
-        <p>Erro ao carregar o produto para edição.</p>
+      <div style={{ textAlign: 'center', padding: '2rem' }}>
+        <Typography.Text type="danger">Erro ao carregar o produto.</Typography.Text>
       </div>
     );
   }
 
+  // Pré-preenchimento dos campos
+  setValue('nome', product.nome);
+  setValue('preco', product.preco);
+  setValue('descricao', product.descricao);
+
   return (
-    <div>
-      <h2>Editar Produto</h2>
-      <ProductForm
-        onSubmit={handleSubmit}
-        defaultValues={product}
-        loading={false}
-      />
+    <div style={{ maxWidth: 600, margin: '0 auto', padding: '1rem' }}>
+      <Title level={3}>Editar Produto</Title>
+      <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
+        <Form.Item
+          label="Nome"
+          validateStatus={errors.nome ? 'error' : ''}
+          help={errors.nome?.message}
+        >
+          <Input {...register('nome')} />
+        </Form.Item>
+
+        <Form.Item
+          label="Preço"
+          validateStatus={errors.preco ? 'error' : ''}
+          help={errors.preco?.message}
+        >
+          <InputNumber {...register('preco')} style={{ width: '100%' }} min={0} />
+        </Form.Item>
+
+        <Form.Item
+          label="Descrição"
+          validateStatus={errors.descricao ? 'error' : ''}
+          help={errors.descricao?.message}
+        >
+          <Input.TextArea rows={4} {...register('descricao')} />
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit" loading={isUpdating}>
+            Atualizar Produto
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 }
