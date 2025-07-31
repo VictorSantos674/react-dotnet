@@ -1,6 +1,6 @@
 import { useDeleteProductMutation, useGetAllProductsQuery } from '@/services/api/endpoints/productApi';
 import type { Product } from '@/types/Product';
-import { Table, Button, Popconfirm, message, Space, Typography, Spin, Alert } from 'antd';
+import { Table, Button, Popconfirm, message, Space, Typography, Spin, Alert} from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -64,14 +64,21 @@ export default function ProdutoList() {
       </Space>
 
       {isLoading ? (
-        <Spin tip="Carregando produtos..." />
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <Spin size="large" tip="Carregando produtos..." />
+        </div>
       ) : isError ? (
-        <Alert
-          message="Erro ao carregar produtos"
-          description={(error as any)?.data?.message || 'Tente novamente mais tarde.'}
-          type="error"
-          showIcon
-        />
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <Alert
+            message="Erro ao carregar produtos"
+            description={(error as any)?.data?.message || 'Tente novamente mais tarde.'}
+            type="error"
+            showIcon
+          />
+          <Button onClick={() => refetch()} style={{ marginTop: '1rem' }}>
+            Tentar novamente
+          </Button>
+        </div>
       ) : (
         <Table
           dataSource={products}
