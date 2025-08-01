@@ -17,6 +17,7 @@ namespace Domain.Interfaces
             string orderByProperty,
             bool isAscending
         );
-        Task<List<Produto>> BuscarPorNomeAsync(string nome);        
+        Task<List<Produto>> BuscarPorNomeAsync(string nome);
+        Task<(List<Product> Items, int TotalCount)> GetPagedProductsAsync(int pageNumber, int pageSize, string? searchTerm);        
     }
 }
