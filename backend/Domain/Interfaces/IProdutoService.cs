@@ -17,6 +17,6 @@ namespace Domain.Interfaces
             string orderByProperty,
             bool isAscending
         );
-        
+        Task<List<Produto>> BuscarPorNomeAsync(string nome);        
     }
 }

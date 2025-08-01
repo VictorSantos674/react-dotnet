@@ -46,5 +46,11 @@ namespace Domain.Services
         {
             return await _produtoRepository.GetPagedList(pageNumber, pageSize, searchTerm, searchProperty, orderByProperty, isAscending);
         }
+
+        public async Task<List<Produto>> BuscarPorNomeAsync(string nome)
+        {
+            return await _produtoRepository.BuscarPorNomeAsync(nome);
+        }
+
     }
 }
