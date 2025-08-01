@@ -52,5 +52,9 @@ namespace Domain.Services
             return await _produtoRepository.BuscarPorNomeAsync(nome);
         }
 
+        public async Task<(List<Product> Items, int TotalCount)> GetPagedProductsAsync(int pageNumber, int pageSize, string? searchTerm)
+        {
+            return await _repo.GetPagedProductsAsync(pageNumber, pageSize, searchTerm);
+        }
     }
 }
