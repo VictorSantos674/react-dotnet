@@ -31,5 +31,25 @@ namespace Infraestructure.Repository
                 .Where(p => p.Nome.Contains(nome))
                 .ToListAsync();
         }
+
+        public async Task<(List<Product> Items, int TotalCount)> GetPagedProductsAsync(int pageNumber, int pageSize, string? searchTerm)
+        {
+            var query = _context.Product.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                query = query.Where(p => p.Nome.Contains(searchTerm));
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .OrderBy(p => p.Nome)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
+        }
     }
 }
