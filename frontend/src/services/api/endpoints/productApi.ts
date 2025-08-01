@@ -36,12 +36,16 @@ export const productApi = createApi({
       }),
       invalidatesTags: ["Product"],
     }),
+    getProductsByName: builder.query<Product[], string>({
+      query: (nome) => `produto/BuscarPorNome?nome=${encodeURIComponent(nome)}`,
+    }),
   }),
 });
 
 export const {
   useGetAllProductsQuery,
   useGetProductByIdQuery,
+  useGetProductsByNameQuery,
   useAddProductMutation,
   useDeleteProductMutation,
   useUpdateProductMutation,
