@@ -1,17 +1,41 @@
-import { useDeleteProductMutation, useGetAllProductsQuery } from '@/services/api/endpoints/productApi';
+import {
+  useDeleteProductMutation,
+  useGetProductsByNameQuery,
+} from '@/services/api/endpoints/productApi';
 import type { Product } from '@/types/Product';
-import { Table, Button, Popconfirm, message, Space, Typography, Spin, Alert} from 'antd';
+import {
+  Table,
+  Button,
+  Popconfirm,
+  message,
+  Space,
+  Typography,
+  Spin,
+  Alert,
+  Input,
+} from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { useState } from 'react';
+import { useState, type SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDebounce } from '@/hooks/useDebounce';
 
 const { Title } = Typography;
 
 export default function ProdutoList() {
-  const { data: products, isLoading, isError, error, refetch } = useGetAllProductsQuery();
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearch = useDebounce(searchTerm, 500);
+  const navigate = useNavigate();
+
+  const {
+    data: products,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useGetProductsByNameQuery(debouncedSearch);
+
   const [deleteProduct] = useDeleteProductMutation();
   const [deletingId, setDeletingId] = useState<number | null>(null);
-  const navigate = useNavigate();
 
   const handleDelete = async (id: number) => {
     try {
@@ -56,29 +80,34 @@ export default function ProdutoList() {
 
   return (
     <div style={{ padding: '1rem' }}>
-      <Space style={{ marginBottom: '1rem', justifyContent: 'space-between', width: '100%' }}>
+      <Space
+        style={{ marginBottom: '1rem', justifyContent: 'space-between', width: '100%' }}
+        direction="vertical"
+        size="middle"
+      >
         <Title level={3}>Lista de Produtos</Title>
+
+        <Input
+          placeholder="Buscar por nome"
+          value={searchTerm}
+          onChange={(e: { target: { value: SetStateAction<string>; }; }) => setSearchTerm(e.target.value)}
+          style={{ maxWidth: 300 }}
+        />
+
         <Button type="primary" onClick={() => navigate('/produtos/novo')}>
           Novo Produto
         </Button>
       </Space>
 
       {isLoading ? (
-        <div style={{ textAlign: 'center', padding: '2rem' }}>
-          <Spin size="large" tip="Carregando produtos..." />
-        </div>
+        <Spin tip="Carregando produtos..." />
       ) : isError ? (
-        <div style={{ textAlign: 'center', padding: '2rem' }}>
-          <Alert
-            message="Erro ao carregar produtos"
-            description={(error as any)?.data?.message || 'Tente novamente mais tarde.'}
-            type="error"
-            showIcon
-          />
-          <Button onClick={() => refetch()} style={{ marginTop: '1rem' }}>
-            Tentar novamente
-          </Button>
-        </div>
+        <Alert
+          message="Erro ao carregar produtos"
+          description={(error as any)?.data?.message || 'Tente novamente mais tarde.'}
+          type="error"
+          showIcon
+        />
       ) : (
         <Table
           dataSource={products}
