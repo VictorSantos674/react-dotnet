@@ -77,5 +77,21 @@ namespace WebApis.Controllers
             var produtos = await _produtoService.BuscarPorNomeAsync(nome);
             return Ok(produtos);
         }
+
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetPaged(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? searchTerm = null)
+        {
+            var (items, totalCount) = await _service.GetPagedProductsAsync(pageNumber, pageSize, searchTerm);
+            return Ok(new
+            {
+                products = items,
+                total = totalCount,
+                pageNumber,
+                pageSize
+            });
+        }
     }
 }
