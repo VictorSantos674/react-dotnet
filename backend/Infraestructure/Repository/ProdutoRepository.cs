@@ -24,5 +24,12 @@ namespace Infraestructure.Repository
         {
             return await _context.Set<Produto>().ToListAsync();
         }
+
+        public async Task<List<Produto>> BuscarPorNomeAsync(string nome)
+        {
+            return await _context.Produto
+                .Where(p => p.Nome.Contains(nome))
+                .ToListAsync();
+        }
     }
 }
