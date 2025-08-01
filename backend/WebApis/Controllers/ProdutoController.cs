@@ -71,5 +71,11 @@ namespace WebApis.Controllers
             return NoContent();
         }
 
+        [HttpGet("BuscarPorNome")]
+        public async Task<ActionResult<List<Produto>>> BuscarPorNome(string nome)
+        {
+            var produtos = await _produtoService.BuscarPorNomeAsync(nome);
+            return Ok(produtos);
+        }
     }
 }
