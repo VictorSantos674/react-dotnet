@@ -1,7 +1,6 @@
 import {
   useDeleteProductMutation,
   useGetAllProductsQuery,
-  useGetProductsByNameQuery,
 } from '@/services/api/endpoints/productApi';
 import type { Product } from '@/types/Product';
 import {
@@ -13,6 +12,7 @@ import {
   Spin,
   Alert,
   Input,
+  Empty,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState, type SetStateAction } from 'react';
@@ -27,20 +27,16 @@ export default function ProdutoList() {
   const debouncedSearch = useDebounce(searchTerm, 500);
   const navigate = useNavigate();
 
-  const shouldSearch = debouncedSearch.trim() !== '';
-
   const pageSize = 10;
   const [page, setPage] = useState(1);
-    
+
   const {
-    data: products,
+    data: paginatedData,
     isLoading,
     isError,
     error,
     refetch,
-  } = shouldSearch
-    ? useGetProductsByNameQuery(debouncedSearch)
-    : useGetAllProductsQuery({ pageNumber: page, pageSize });
+  } = useGetAllProductsQuery({ pageNumber: page, pageSize });
 
   const [deleteProduct] = useDeleteProductMutation();
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -88,7 +84,8 @@ export default function ProdutoList() {
         <Input
           placeholder="Buscar por nome"
           value={searchTerm}
-          onChange={(e: { target: { value: SetStateAction<string>; } }) => setSearchTerm(e.target.value)}
+          onChange={(e: { target: { value: SetStateAction<string>; } }) =>
+            setSearchTerm(e.target.value)}
           style={{ maxWidth: 300 }}
         />
 
@@ -108,11 +105,17 @@ export default function ProdutoList() {
         />
       ) : (
         <Table
-          dataSource={products}
+          dataSource={paginatedData?.data || []}
           columns={columns}
           rowKey="id"
           scroll={{ x: true }}
-          pagination={{ pageSize: 10 }}
+          pagination={{
+            pageSize,
+            current: page,
+            total: paginatedData?.total,
+            onChange: (newPage: number) => setPage(newPage),
+          }}
+          locale={{ emptyText: <Empty description="Nenhum produto encontrado" /> }}
         />
       )}
     </div>
