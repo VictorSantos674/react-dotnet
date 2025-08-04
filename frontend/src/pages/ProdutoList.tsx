@@ -29,6 +29,9 @@ export default function ProdutoList() {
 
   const shouldSearch = debouncedSearch.trim() !== '';
 
+  const pageSize = 10;
+  const [page, setPage] = useState(1);
+  
   const {
     data: products,
     isLoading,
@@ -37,7 +40,7 @@ export default function ProdutoList() {
     refetch,
   } = shouldSearch
     ? useGetProductsByNameQuery(debouncedSearch)
-    : useGetAllProductsQuery();
+    : useGetAllProductsQuery({ pageNumber: page, pageSize });
 
   const [deleteProduct] = useDeleteProductMutation();
   const [deletingId, setDeletingId] = useState<number | null>(null);
