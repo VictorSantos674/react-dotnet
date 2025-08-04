@@ -19,5 +19,6 @@ namespace Domain.Interfaces
         );
         Task<List<Produto>> BuscarPorNomeAsync(string nome);
         Task<(List<Product> Items, int TotalCount)> GetPagedProductsAsync(int pageNumber, int pageSize, string? searchTerm);        
+        Task<(List<Product>, int)> GetPagedListAsync(int pageNumber, int pageSize);
     }
 }
