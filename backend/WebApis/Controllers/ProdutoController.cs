@@ -84,7 +84,7 @@ namespace WebApis.Controllers
             [FromQuery] int pageSize = 10,
             [FromQuery] string? searchTerm = null)
         {
-            var (items, totalCount) = await _service.GetPagedProductsAsync(pageNumber, pageSize, searchTerm);
+            var (items, totalCount) = await _produtoService.GetPagedProductsAsync(pageNumber, pageSize, searchTerm);
             return Ok(new
             {
                 products = items,
