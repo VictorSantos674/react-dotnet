@@ -1,14 +1,22 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { Product } from "@/types/Product";
 
+type PaginatedProductsResponse = {
+  data: Product[];
+  total: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+};
+
 export const productApi = createApi({
   reducerPath: "productApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/products" }),
   tagTypes: ["Product"],
   endpoints: (builder) => ({
-    getAllProducts: builder.query<Product[], void>({
-      query: () => "",
-      providesTags: ["Product"],
+    getAllProducts: builder.query<PaginatedProductsResponse, { pageNumber: number; pageSize: number }>({
+      query: ({ pageNumber, pageSize }) => `?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+      providesTags: ['Product'],
     }),
     getProductById: builder.query<Product, number>({
       query: (id) => `/${id}`,
