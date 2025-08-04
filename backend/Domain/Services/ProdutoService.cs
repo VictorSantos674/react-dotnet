@@ -56,5 +56,17 @@ namespace Domain.Services
         {
             return await _repo.GetPagedProductsAsync(pageNumber, pageSize, searchTerm);
         }
+
+        public async Task<(List<Product>, int)> GetPagedListAsync(int pageNumber, int pageSize)
+        {
+            var all = await _productRepository.GetAllAsync();
+            var total = all.Count;
+            var paged = all
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return (paged, total);
+        }
     }
 }
