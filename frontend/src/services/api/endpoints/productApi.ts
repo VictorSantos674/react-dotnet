@@ -14,10 +14,21 @@ export const productApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/products" }),
   tagTypes: ["Product"],
   endpoints: (builder) => ({
-    getAllProducts: builder.query<PaginatedProductsResponse, { pageNumber: number; pageSize: number }>({
-      query: ({ pageNumber, pageSize }) => `?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    getAllProducts: builder.query<
+      {
+        data: Product[];
+        total: number;
+        pageNumber: number;
+        pageSize: number;
+        totalPages: number;
+      },
+      { nome?: string; pageNumber: number; pageSize: number }
+    >({
+      query: ({ nome = '', pageNumber, pageSize }) =>
+        `?nome=${encodeURIComponent(nome)}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
       providesTags: ['Product'],
     }),
+
     getProductById: builder.query<Product, number>({
       query: (id) => `/${id}`,
     }),
