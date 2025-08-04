@@ -1,12 +1,12 @@
 import {
   useDeleteProductMutation,
+  useGetAllProductsQuery,
   useGetProductsByNameQuery,
 } from '@/services/api/endpoints/productApi';
 import type { Product } from '@/types/Product';
 import {
   Table,
   Button,
-  Popconfirm,
   message,
   Space,
   Typography,
@@ -18,6 +18,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { useState, type SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDebounce } from '@/hooks/useDebounce';
+import ProductTableActions from '@/components/ProductTableActions';
 
 const { Title } = Typography;
 
@@ -26,13 +27,17 @@ export default function ProdutoList() {
   const debouncedSearch = useDebounce(searchTerm, 500);
   const navigate = useNavigate();
 
+  const shouldSearch = debouncedSearch.trim() !== '';
+
   const {
     data: products,
     isLoading,
     isError,
     error,
     refetch,
-  } = useGetProductsByNameQuery(debouncedSearch);
+  } = shouldSearch
+    ? useGetProductsByNameQuery(debouncedSearch)
+    : useGetAllProductsQuery();
 
   const [deleteProduct] = useDeleteProductMutation();
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -59,21 +64,11 @@ export default function ProdutoList() {
       title: 'Ações',
       key: 'acoes',
       render: (_, record) => (
-        <Space>
-          <Button type="link" onClick={() => navigate(`/produtos/editar/${record.id}`)}>
-            Editar
-          </Button>
-          <Popconfirm
-            title="Tem certeza que deseja excluir este produto?"
-            onConfirm={() => handleDelete(record.id!)}
-            okText="Sim"
-            cancelText="Não"
-          >
-            <Button type="link" danger loading={deletingId === record.id}>
-              Excluir
-            </Button>
-          </Popconfirm>
-        </Space>
+        <ProductTableActions
+          id={record.id!}
+          onDelete={handleDelete}
+          loading={deletingId === record.id}
+        />
       ),
     },
   ];
@@ -90,7 +85,7 @@ export default function ProdutoList() {
         <Input
           placeholder="Buscar por nome"
           value={searchTerm}
-          onChange={(e: { target: { value: SetStateAction<string>; }; }) => setSearchTerm(e.target.value)}
+          onChange={(e: { target: { value: SetStateAction<string>; } }) => setSearchTerm(e.target.value)}
           style={{ maxWidth: 300 }}
         />
 
@@ -104,7 +99,7 @@ export default function ProdutoList() {
       ) : isError ? (
         <Alert
           message="Erro ao carregar produtos"
-          description={(error as any)?.data?.message || 'Tente novamente mais tarde.'}
+          description={(error as { data?: { message?: string } })?.data?.message || 'Tente novamente mais tarde.'}
           type="error"
           showIcon
         />
