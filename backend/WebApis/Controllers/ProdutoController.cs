@@ -33,10 +33,32 @@ namespace WebApis.Controllers
         }
 
         [HttpGet("ListarTodos")]
-        public async Task<ActionResult<List<Produto>>> GetAllProdutos()
+        public async Task<IActionResult> GetAll([FromQuery] string? nome, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var produtos = await _produtoService.GetAllProdutosAsync();
-            return Ok(produtos);
+            var query = _context.Produtos.AsQueryable();
+
+            if (!string.IsNullOrEmpty(nome))
+            {
+                query = query.Where(p => p.Nome.Contains(nome));
+            }
+
+            var total = await query.CountAsync();
+
+            var produtos = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var response = new
+            {
+                data = produtos,
+                total,
+                pageNumber,
+                pageSize,
+                totalPages = (int)Math.Ceiling((double)total / pageSize)
+            };
+
+            return Ok(response);
         }
 
         [HttpPost]
