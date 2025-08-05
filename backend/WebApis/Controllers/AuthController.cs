@@ -52,5 +52,27 @@ namespace WebApis.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
+        {
+            var userExists = await _context.Users.AnyAsync(u => u.Email == dto.Email);
+            if (userExists) return BadRequest(new { message = "Usuário já registrado com esse e-mail" });
+
+            var passwordHash = _authService.HashPassword(dto.Password);
+            
+            var user = new User
+            {
+                Name = dto.Name,
+                Email = dto.Email,
+                PasswordHash = passwordHash
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            var token = _authService.GenerateJwtToken(user);
+            return Ok(new { token });
+        }
     }
 }
