@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApis.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProdutoController : ControllerBase
