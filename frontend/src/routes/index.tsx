@@ -4,6 +4,7 @@ import About from "../pages/About";
 import Produto from "../pages/Produto";
 import Produtos  from "../pages/ProdutoList";
 import EditarProduto from "@/pages/ProdutoEdit";
+import Login from '@/pages/Login';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   { 
     path: "/editar/:id",
     element: <EditarProduto />,
+  },
+  {
+    path: '/login',
+    element: <Login />,
   },
 ]);
 
