@@ -1,13 +1,23 @@
-import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import type { RootState } from '@/store';
+import { Button } from 'antd';
+import { logout } from '@/store/authSlice';
 
-function Navbar() {
+export default function Navbar() {
+  const { nome } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+
   return (
-    <nav style={{ display: "flex", gap: "1rem", padding: "1rem" }}>
-      <Link to="/">Home</Link>
-      <Link to="/about">Sobre</Link>
-      <Link to="/produto">Cadastrar Produto</Link>
-      <Link to="/produtos">Listar Produtos</Link>
+    <nav style={{ padding: '1rem', background: '#f0f0f0' }}>
+      <span style={{ marginRight: '1rem' }}>
+        {nome ? `Olá, ${nome}` : 'Bem-vindo(a)'}
+      </span>
+
+      {nome && (
+        <Button onClick={() => dispatch(logout())} type="primary" danger>
+          Logout
+        </Button>
+      )}
     </nav>
   );
 }
-export default Navbar;

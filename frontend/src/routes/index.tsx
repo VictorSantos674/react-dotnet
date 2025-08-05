@@ -6,6 +6,7 @@ import ProdutoList from '@/pages/ProdutoList';
 import ProdutoEdit from '@/pages/ProdutoEdit';
 import RequireAuth from '@/components/RequireAuth';
 import Login from '@/pages/Login';
+import Perfil from '@/pages/Perfil';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: '/about',
         element: <About />,
+      },
+      {
+        path: '/perfil',
+        element: <Perfil />,
       },
       {
         path: '/produtos',

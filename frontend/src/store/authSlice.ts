@@ -1,28 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { jwtDecode } from 'jwt-decode';
 
 interface AuthState {
   token: string | null;
+  nome: string | null;
 }
 
 const initialState: AuthState = {
-  token:  localStorage.getItem('token'),
+  token: localStorage.getItem('token'),
+  nome: null,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setToken(state, action: PayloadAction<string>) {
+    setCredentials: (state, action: PayloadAction<string>) => {
+      const decoded = jwtDecode<{ nome: string }>(action.payload);
       state.token = action.payload;
+      state.nome = decoded.nome;
       localStorage.setItem('token', action.payload);
     },
-    clearToken(state) {
+    logout: (state) => {
       state.token = null;
+      state.nome = null;
       localStorage.removeItem('token');
     },
   },
 });
 
-export const { setToken, clearToken } = authSlice.actions;
+export const { setCredentials, logout } = authSlice.actions;
 export default authSlice.reducer;
