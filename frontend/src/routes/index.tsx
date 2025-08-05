@@ -1,35 +1,41 @@
-import { createBrowserRouter } from "react-router-dom";
-import Home from "../pages/Home";
-import About from "../pages/About";
-import Produto from "../pages/Produto";
-import Produtos  from "../pages/ProdutoList";
-import EditarProduto from "@/pages/ProdutoEdit";
+import { createBrowserRouter } from 'react-router-dom';
+import Home from '@/pages/Home';
+import About from '@/pages/About';
+import Produto from '@/pages/Produto';
+import ProdutoList from '@/pages/ProdutoList';
+import ProdutoEdit from '@/pages/ProdutoEdit';
+import RequireAuth from '@/components/RequireAuth';
 import Login from '@/pages/Login';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Home />,
-  },
-  {
-    path: "/about",
-    element: <About />,
-  },
-  {
-    path: "/produto/:id",
-    element: <Produto />,
-  },
-  {
-    path: "/produtos",
-    element: <Produtos />,
-  },
-  { 
-    path: "/editar/:id",
-    element: <EditarProduto />,
   },
   {
     path: '/login',
     element: <Login />,
+  },
+  {
+    element: <RequireAuth />,
+    children: [
+      {
+        path: '/about',
+        element: <About />,
+      },
+      {
+        path: '/produtos',
+        element: <ProdutoList />,
+      },
+      {
+        path: '/produtos/novo',
+        element: <Produto />,
+      },
+      {
+        path: '/produtos/editar/:id',
+        element: <ProdutoEdit />,
+      },
+    ],
   },
 ]);
 
