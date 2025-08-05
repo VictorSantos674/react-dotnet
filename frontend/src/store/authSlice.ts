@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { jwtDecode } from 'jwt-decode';
+import type { RootState } from '.';
 
 interface AuthState {
   token: string | null;
@@ -32,3 +33,4 @@ const authSlice = createSlice({
 
 export const { setCredentials, logout } = authSlice.actions;
 export default authSlice.reducer;
+export const selectIsAuthenticated = (state: RootState) => !!state.auth.token;
