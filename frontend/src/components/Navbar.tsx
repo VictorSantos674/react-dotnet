@@ -1,23 +1,35 @@
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '@/store';
-import { Button } from 'antd';
+import { Menu, Dropdown, Avatar, Layout, Typography } from 'antd';
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { logout } from '@/store/authSlice';
+
+const { Header } = Layout;
+const { Text } = Typography;
 
 export default function Navbar() {
   const { nome } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 
-  return (
-    <nav style={{ padding: '1rem', background: '#f0f0f0' }}>
-      <span style={{ marginRight: '1rem' }}>
-        {nome ? `Olá, ${nome}` : 'Bem-vindo(a)'}
-      </span>
+  const menu = (
+    <Menu>
+      <Menu.Item icon={<LogoutOutlined />} onClick={() => dispatch(logout())}>
+        Sair
+      </Menu.Item>
+    </Menu>
+  );
 
+  return (
+    <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fff', padding: '0 1rem', boxShadow: '0 2px 8px #f0f1f2' }}>
+      <Text strong style={{ fontSize: '1.2rem' }}>Sistema de Produtos</Text>
       {nome && (
-        <Button onClick={() => dispatch(logout())} type="primary" danger>
-          Logout
-        </Button>
+        <Dropdown overlay={menu} placement="bottomRight">
+          <span style={{ cursor: 'pointer' }}>
+            <Avatar icon={<UserOutlined />} style={{ marginRight: 8 }} />
+            {nome}
+          </span>
+        </Dropdown>
       )}
-    </nav>
+    </Header>
   );
 }

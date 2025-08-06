@@ -17,6 +17,12 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    setToken: (state, action: PayloadAction<string>) => {
+      state.token = action.payload;
+    },
+    setUserName: (state, action: PayloadAction<string>) => {
+      state.nome = action.payload;
+    },
     setCredentials: (state, action: PayloadAction<string>) => {
       const decoded = jwtDecode<{ nome: string }>(action.payload);
       state.token = action.payload;
@@ -31,6 +37,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setToken, setCredentials, logout } = authSlice.actions;
 export default authSlice.reducer;
 export const selectIsAuthenticated = (state: RootState) => !!state.auth.token;

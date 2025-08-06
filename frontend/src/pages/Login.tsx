@@ -1,4 +1,4 @@
-import { Form, Input, Button, Typography, message } from 'antd';
+import { Form, Input, Button, Typography, message, Card } from 'antd';
 import { useLoginMutation } from '@/services/api/endpoints/authApi';
 import { useDispatch } from 'react-redux';
 import { setToken } from '@/store/authSlice';
@@ -17,28 +17,30 @@ export default function Login() {
       dispatch(setToken(response.token));
       message.success('Login realizado com sucesso!');
       navigate('/produtos');
-    } catch (err) {
-      console.error(err);
+    } catch {
       message.error('Email ou senha inválidos');
     }
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '3rem auto' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '5rem' }}>
       <Title level={2}>Login</Title>
-      <Form layout="vertical" onFinish={handleSubmit}>
-        <Form.Item name="email" label="Email" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item name="senha" label="Senha" rules={[{ required: true }]}>
-          <Input.Password />
-        </Form.Item>
-        <Form.Item>
-          <Button htmlType="submit" type="primary" loading={isLoading} block>
-            Entrar
-          </Button>
-        </Form.Item>
-      </Form>
+
+      <Card style={{ width: 400 }}>
+        <Form layout="vertical" onFinish={handleSubmit}>
+          <Form.Item name="email" label="Email" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="senha" label="Senha" rules={[{ required: true }]}>
+            <Input.Password />
+          </Form.Item>
+          <Form.Item>
+            <Button htmlType="submit" type="primary" block loading={isLoading}>
+              Entrar
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
     </div>
   );
 }
