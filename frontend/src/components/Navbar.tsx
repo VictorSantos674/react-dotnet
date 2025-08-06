@@ -20,8 +20,17 @@ export default function Navbar() {
   );
 
   return (
-    <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fff', padding: '0 1rem', boxShadow: '0 2px 8px #f0f1f2' }}>
-      <Text strong style={{ fontSize: '1.2rem' }}>Sistema de Produtos</Text>
+    <Header style={{
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '0.5rem 1rem',
+      backgroundColor: '#fff',
+    }}>
+      <Text strong style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>
+        Sistema de Produtos
+      </Text>
       {nome && (
         <Dropdown overlay={menu} placement="bottomRight">
           <span style={{ cursor: 'pointer' }}>

@@ -1,21 +1,21 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-import { Provider } from "react-redux";
-import { ToastContainer } from "react-toastify";
-import { store } from "./store";
-import router from "./routes";
-import Navbar from "./components/Navbar";
-import "react-toastify/dist/ReactToastify.css";
-import "./index.css";
-import 'antd/dist/reset.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { ConfigProvider, theme as antdTheme } from 'antd';
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <Navbar />
-      <RouterProvider router={router} />
-      <ToastContainer aria-label="Notificações de toast" />
-    </Provider>
-  </React.StrictMode>
+    <ConfigProvider
+      theme={{
+        algorithm: antdTheme.defaultAlgorithm,
+        token: {
+          colorPrimary: '#722ED1',
+          borderRadius: 8,
+          fontFamily: 'Inter, sans-serif',
+        },
+      }}
+    >
+      <App />
+    </ConfigProvider>
+  </React.StrictMode>,
 );
