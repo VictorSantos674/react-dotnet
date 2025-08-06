@@ -28,6 +28,9 @@ export default function Login() {
       <Col xs={24} sm={16} md={12} lg={8}>
         <Card>
           <Title level={3} style={{ textAlign: 'center' }}>Login</Title>
+          <p style={{ textAlign: 'center', marginTop: '1rem' }}>
+            Ainda não tem uma conta? <a href="/cadastro">Cadastre-se</a>
+          </p>
           <Form layout="vertical" onFinish={handleSubmit}>
             <Form.Item name="email" label="Email" rules={[{ required: true }]}>
               <Input placeholder="Digite seu email" />
