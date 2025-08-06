@@ -8,6 +8,7 @@ import RequireAuth from '@/components/RequireAuth';
 import Login from '@/pages/Login';
 import Perfil from '@/pages/Perfil';
 import Register from '@/pages/Register';
+import Cadastro from '@/pages/Cadastro';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <Register />,
+  },
+  {
+    path: '/cadastro',
+    element: <Cadastro />,
   },
   {
     element: <RequireAuth />,
