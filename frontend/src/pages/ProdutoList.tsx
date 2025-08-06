@@ -7,12 +7,14 @@ import {
   Table,
   Button,
   message,
-  Space,
   Typography,
   Spin,
   Alert,
   Input,
   Empty,
+  Row,
+  Col,
+  Space,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState, type SetStateAction } from 'react';
@@ -71,26 +73,42 @@ export default function ProdutoList() {
 
   return (
     <div style={{ padding: '1rem' }}>
-      <Space direction="vertical" style={{ width: '100%' }} size="middle">
-        <Title level={3}>Lista de Produtos</Title>
+      <Space direction="vertical" size="large" style={{ width: '100%' }}>
+        <Row justify="space-between" align="middle">
+          <Col>
+            <Title level={3} style={{ marginBottom: 0 }}>
+              Lista de Produtos
+            </Title>
+          </Col>
+          <Col>
+            <Button type="primary" onClick={() => navigate('/produtos/novo')}>
+              Novo Produto
+            </Button>
+          </Col>
+        </Row>
 
-        <Input
-          placeholder="Buscar por nome"
-          value={searchTerm}
-          onChange={(e: { target: { value: SetStateAction<string>; }; }) => setSearchTerm(e.target.value)}
-          style={{ maxWidth: 300 }}
-        />
-
-        <Button type="primary" onClick={() => navigate('/produtos/novo')}>
-          Novo Produto
-        </Button>
+        <Row gutter={[16, 16]} align="middle" style={{ maxWidth: 400 }}>
+          <Col span={24}>
+            <Input
+              placeholder="Buscar por nome"
+              value={searchTerm}
+              onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                setSearchTerm(e.target.value)
+              }
+              allowClear
+            />
+          </Col>
+        </Row>
 
         {isLoading ? (
           <Spin tip="Carregando produtos..." />
         ) : isError ? (
           <Alert
             message="Erro ao carregar produtos"
-            description={(error as { data?: { message?: string } })?.data?.message || 'Tente novamente mais tarde.'}
+            description={
+              (error as { data?: { message?: string } })?.data?.message ||
+              'Tente novamente mais tarde.'
+            }
             type="error"
             showIcon
           />
@@ -106,7 +124,9 @@ export default function ProdutoList() {
               total: paginatedData?.total,
               onChange: (newPage: SetStateAction<number>) => setPage(newPage),
             }}
-            locale={{ emptyText: <Empty description="Nenhum produto encontrado" /> }}
+            locale={{
+              emptyText: <Empty description="Nenhum produto encontrado" />,
+            }}
           />
         )}
       </Space>
