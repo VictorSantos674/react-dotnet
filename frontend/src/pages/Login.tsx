@@ -1,4 +1,5 @@
-import { Form, Input, Button, Typography, message, Card } from 'antd';
+import { Form, Input, Button, Typography, message, Row, Col } from 'antd';
+import Card from 'antd/es/card/Card'; 
 import { useLoginMutation } from '@/services/api/endpoints/authApi';
 import { useDispatch } from 'react-redux';
 import { setToken } from '@/store/authSlice';
@@ -17,30 +18,31 @@ export default function Login() {
       dispatch(setToken(response.token));
       message.success('Login realizado com sucesso!');
       navigate('/produtos');
-    } catch {
+    } catch (err) {
       message.error('Email ou senha inválidos');
     }
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '5rem' }}>
-      <Title level={2}>Login</Title>
-
-      <Card style={{ width: 400 }}>
-        <Form layout="vertical" onFinish={handleSubmit}>
-          <Form.Item name="email" label="Email" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="senha" label="Senha" rules={[{ required: true }]}>
-            <Input.Password />
-          </Form.Item>
-          <Form.Item>
-            <Button htmlType="submit" type="primary" block loading={isLoading}>
-              Entrar
-            </Button>
-          </Form.Item>
-        </Form>
-      </Card>
-    </div>
+    <Row justify="center" align="middle" style={{ minHeight: '100vh', padding: '1rem' }}>
+      <Col xs={24} sm={16} md={12} lg={8}>
+        <Card>
+          <Title level={3} style={{ textAlign: 'center' }}>Login</Title>
+          <Form layout="vertical" onFinish={handleSubmit}>
+            <Form.Item name="email" label="Email" rules={[{ required: true }]}>
+              <Input placeholder="Digite seu email" />
+            </Form.Item>
+            <Form.Item name="senha" label="Senha" rules={[{ required: true }]}>
+              <Input.Password placeholder="Digite sua senha" />
+            </Form.Item>
+            <Form.Item>
+              <Button htmlType="submit" type="primary" loading={isLoading} block>
+                Entrar
+              </Button>
+            </Form.Item>
+          </Form>
+        </Card>
+      </Col>
+    </Row>
   );
 }

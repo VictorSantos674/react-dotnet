@@ -1,26 +1,22 @@
+import { Descriptions, Typography } from 'antd';
+import Card from 'antd/es/card/Card';
 import { useSelector } from 'react-redux';
 import type { RootState } from '@/store';
-import { jwtDecode } from 'jwt-decode';
 
-interface JwtPayload {
-  nome: string;
-  email?: string;
-  exp?: number;
-  [key: string]: any;
-}
+const { Title } = Typography;
 
 export default function Perfil() {
-  const token = useSelector((state: RootState) => state.auth.token);
-
-  if (!token) return <p>Você precisa estar logado para ver o perfil.</p>;
-
-  const decoded = jwtDecode<JwtPayload>(token);
+  const { nome, email } = useSelector((state: RootState) => state.auth);
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h2>Perfil do Usuário</h2>
-      <p><strong>Nome:</strong> {decoded.nome}</p>
-      {decoded.email && <p><strong>Email:</strong> {decoded.email}</p>}
+    <div style={{ padding: '2rem' }}>
+      <Card bordered={false}>
+        <Title level={3}>Perfil do Usuário</Title>
+        <Descriptions bordered column={1}>
+          <Descriptions.Item label="Nome">{nome || 'N/A'}</Descriptions.Item>
+          <Descriptions.Item label="Email">{email || 'N/A'}</Descriptions.Item>
+        </Descriptions>
+      </Card>
     </div>
   );
 }

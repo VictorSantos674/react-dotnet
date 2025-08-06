@@ -6,11 +6,13 @@ import type { RootState } from '.';
 interface AuthState {
   token: string | null;
   nome: string | null;
+  email: string | null;
 }
 
 const initialState: AuthState = {
   token: localStorage.getItem('token'),
   nome: null,
+  email: null,
 };
 
 const authSlice = createSlice({
