@@ -1,44 +1,33 @@
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '@/store';
-import { Menu, Dropdown, Avatar, Layout, Typography } from 'antd';
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Space } from 'antd';
 import { logout } from '@/store/authSlice';
-
-const { Header } = Layout;
-const { Text } = Typography;
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
-  const { nome } = useSelector((state: RootState) => state.auth);
+  const { nome, token } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const menu = (
-    <Menu>
-      <Menu.Item icon={<LogoutOutlined />} onClick={() => dispatch(logout())}>
-        Sair
-      </Menu.Item>
-    </Menu>
-  );
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login');
+  };
 
   return (
-    <Header style={{
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: '0.5rem 1rem',
-      backgroundColor: '#fff',
-    }}>
-      <Text strong style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>
-        Sistema de Produtos
-      </Text>
-      {nome && (
-        <Dropdown overlay={menu} placement="bottomRight">
-          <span style={{ cursor: 'pointer' }}>
-            <Avatar icon={<UserOutlined />} style={{ marginRight: 8 }} />
-            {nome}
-          </span>
-        </Dropdown>
-      )}
-    </Header>
+    <nav style={{ padding: '1rem', background: '#f0f0f0', display: 'flex', justifyContent: 'space-between' }}>
+      <span>{nome ? `Olá, ${nome}` : 'Bem-vindo(a)'}</span>
+
+      <Space>
+        {!token ? (
+          <>
+            <Button onClick={() => navigate('/login')} type="default">Login</Button>
+            <Button onClick={() => navigate('/cadastro')} type="primary">Cadastrar</Button>
+          </>
+        ) : (
+          <Button onClick={handleLogout} type="primary" danger>Logout</Button>
+        )}
+      </Space>
+    </nav>
   );
 }
