@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
+import MainLayout from '@/components/MainLayout';
 import Home from '@/pages/Home';
 import About from '@/pages/About';
 import Produto from '@/pages/Produto';
@@ -13,42 +14,21 @@ import Cadastro from '@/pages/Cadastro';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/register',
-    element: <Register />,
-  },
-  {
-    path: '/cadastro',
-    element: <Cadastro />,
-  },
-  {
-    element: <RequireAuth />,
+    element: <MainLayout />,
     children: [
+      { index: true, element: <Home /> },
+      { path: 'login', element: <Login /> },
+      { path: 'register', element: <Register /> },
+      { path: 'cadastro', element: <Cadastro /> },
       {
-        path: '/about',
-        element: <About />,
-      },
-      {
-        path: '/perfil',
-        element: <Perfil />,
-      },
-      {
-        path: '/produtos',
-        element: <ProdutoList />,
-      },
-      {
-        path: '/produtos/novo',
-        element: <Produto />,
-      },
-      {
-        path: '/produtos/editar/:id',
-        element: <ProdutoEdit />,
+        element: <RequireAuth />,
+        children: [
+          { path: 'about', element: <About /> },
+          { path: 'perfil', element: <Perfil /> },
+          { path: 'produtos', element: <ProdutoList /> },
+          { path: 'produtos/novo', element: <Produto /> },
+          { path: 'produtos/editar/:id', element: <ProdutoEdit /> },
+        ],
       },
     ],
   },
