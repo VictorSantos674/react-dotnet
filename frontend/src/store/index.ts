@@ -3,7 +3,7 @@ import { productApi } from '@/services/api/endpoints/productApi';
 import { authApi } from '@/services/api/endpoints/authApi';
 import authReducer from './authSlice';
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     [productApi.reducerPath]: productApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
@@ -14,6 +14,8 @@ export const store = configureStore({
       .concat(productApi.middleware)
       .concat(authApi.middleware),
 });
+
+export default store;
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
