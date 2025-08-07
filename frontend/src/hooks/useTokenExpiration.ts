@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { jwtDecode } from 'jwt-decode'; 
-import { clearToken  } from '@/store/authSlice'; 
+import { logout } from '@/store/authSlice'; 
 import type { RootState } from '@/store';
 
 interface DecodedToken {
@@ -20,12 +20,12 @@ export function useTokenExpiration() {
     const now = Date.now();
 
     if (expirationTime < now) {
-      dispatch(clearToken());
+      dispatch(logout());
       return;
     }
 
     const timeout = setTimeout(() => {
-      dispatch(clearToken());
+      dispatch(logout());
     }, expirationTime - now);
 
     return () => clearTimeout(timeout);
