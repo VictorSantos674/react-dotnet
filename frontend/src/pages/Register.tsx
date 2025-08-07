@@ -2,13 +2,13 @@ import { useRegisterUserMutation } from '@/services/api/endpoints/authApi';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { message, Input, Button, Space, Typography } from 'antd';
-import { useAppDispatch } from '@/store/hooks';
-import { setToken } from '@/store/slices/authSlice';
+import { useAppDispatch } from '@/store/authSlice';
+import { setToken } from '@/store/authSlice';
 
 const { Title } = Typography;
 
 export default function Register() {
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [form, setForm] = useState({ nome: '', email: '', senha: '' });
   const [registerUser, { isLoading }] = useRegisterUserMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -19,8 +19,8 @@ export default function Register() {
 
   const handleSubmit = async () => {
     try {
-      const { token } = await registerUser(form).unwrap();
-      dispatch(setToken(token));
+      const response = await registerUser(form).unwrap();
+      dispatch(setToken(response.token)); 
       message.success('Cadastro realizado com sucesso!');
       navigate('/');
     } catch (err: any) {
@@ -32,9 +32,9 @@ export default function Register() {
     <div style={{ maxWidth: 400, margin: 'auto', paddingTop: '2rem' }}>
       <Title level={3}>Cadastro</Title>
       <Space direction="vertical" style={{ width: '100%' }}>
-        <Input name="name" placeholder="Nome" value={form.name} onChange={handleChange} />
+        <Input name="nome" placeholder="Nome" value={form.nome} onChange={handleChange} />
         <Input name="email" placeholder="E-mail" value={form.email} onChange={handleChange} />
-        <Input.Password name="password" placeholder="Senha" value={form.password} onChange={handleChange} />
+        <Input.Password name="senha" placeholder="Senha" value={form.senha} onChange={handleChange} />
         <Button type="primary" onClick={handleSubmit} loading={isLoading}>
           Cadastrar
         </Button>
