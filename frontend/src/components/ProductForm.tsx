@@ -1,4 +1,5 @@
-import { Form, Input, InputNumber, Button, Typography, Card } from 'antd';
+import { Form, Input, InputNumber, Button, Typography } from 'antd';
+import Card from 'antd/es/card/Card'; 
 import { Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type ProductFormValues, productFormSchema } from '@/validations/productFormSchema';
