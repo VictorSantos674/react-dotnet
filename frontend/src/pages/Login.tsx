@@ -3,7 +3,7 @@ import Card from 'antd/es/card/Card';
 import { useLoginMutation } from '@/services/api/endpoints/authApi';
 import { useDispatch } from 'react-redux';
 import { setToken } from '@/store/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const { Title } = Typography;
 
@@ -11,13 +11,16 @@ export default function Login() {
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = (location.state as { from?: Location })?.from?.pathname || '/home';
 
   const handleSubmit = async (values: { email: string; senha: string }) => {
     try {
       const response = await login(values).unwrap();
       dispatch(setToken(response.token));
       message.success('Login realizado com sucesso!');
-      navigate('/produtos');
+      navigate(from, { replace: true });
     } catch (err) {
       message.error('Email ou senha inválidos');
     }
