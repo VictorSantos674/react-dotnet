@@ -17,7 +17,7 @@ import {
   Space,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { useState, type SetStateAction } from 'react';
+import { useState, type SetStateAction, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductTableActions from '@/components/ProductTableActions';
 
@@ -71,6 +71,13 @@ export default function ProdutoList() {
     },
   ];
 
+  const filteredData = useMemo(() => {
+    if (!searchTerm) return paginatedData?.data || [];
+    return paginatedData?.data?.filter((p) =>
+      p.nome.toLowerCase().includes(searchTerm.toLowerCase())
+    ) || [];
+  }, [searchTerm, paginatedData]);
+
   return (
     <div style={{ padding: '1rem' }}>
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
@@ -92,9 +99,7 @@ export default function ProdutoList() {
             <Input
               placeholder="Buscar por nome"
               value={searchTerm}
-              onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                setSearchTerm(e.target.value)
-              }
+              onChange={(e: { target: { value: SetStateAction<string>; }; }) => setSearchTerm(e.target.value)}
               allowClear
             />
           </Col>
@@ -114,7 +119,7 @@ export default function ProdutoList() {
           />
         ) : (
           <Table
-            dataSource={paginatedData?.data || []}
+            dataSource={filteredData}
             columns={columns}
             rowKey="id"
             scroll={{ x: true }}
