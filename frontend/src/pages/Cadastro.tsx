@@ -1,19 +1,29 @@
 import { Form, Input, Button, Typography, Row, Col, message } from 'antd';
-import Card from 'antd/es/card/Card'; 
+import Card from 'antd/es/card/Card';
 import { useRegisterUserMutation } from '@/services/api/endpoints/authApi';
+import { useDispatch } from 'react-redux';
+import { setToken } from '@/store/authSlice';
 import { useNavigate } from 'react-router-dom';
 
 const { Title } = Typography;
 
 export default function Cadastro() {
   const [registerUser, { isLoading }] = useRegisterUserMutation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (values: { nome: string; email: string; senha: string }) => {
     try {
-      await registerUser(values).unwrap();
-      message.success('Cadastro realizado com sucesso!');
-      navigate('/login');
+      const response = await registerUser(values).unwrap();
+
+      if (response.token) {
+        dispatch(setToken(response.token));
+        message.success('Cadastro realizado e login efetuado com sucesso!');
+        navigate('/home'); 
+      } else {
+        message.success('Cadastro realizado com sucesso! Faça login para continuar.');
+        navigate('/login');
+      }
     } catch (err) {
       message.error('Erro ao cadastrar. Verifique os dados e tente novamente.');
     }
