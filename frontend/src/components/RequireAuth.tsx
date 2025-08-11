@@ -8,15 +8,15 @@ export default function RequireAuth() {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const location = useLocation();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      message.warning('Faça login para acessar esta página.');
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     message.warning('Faça login para acessar esta página.');
+  //   }
+  // }, [isAuthenticated]);
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
+  // if (!isAuthenticated) {
+  //   return <Navigate to="/login" state={{ from: location }} replace />;
+  // }
 
   return <Outlet />;
 }

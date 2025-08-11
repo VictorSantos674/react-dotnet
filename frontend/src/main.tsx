@@ -12,7 +12,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         theme={{
           algorithm: antdTheme.defaultAlgorithm,
           token: {
-            colorPrimary: '#722ED1',
+            colorPrimary: '#058ED9',
+            colorBgBase: '#F4EBD9',
+            colorTextBase: '#483D3F',
+            colorTextSecondary: '#A39A92',
+            colorBorder: '#A39A92',
             borderRadius: 8,
             fontFamily: 'Inter, sans-serif',
           },
