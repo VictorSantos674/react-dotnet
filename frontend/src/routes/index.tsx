@@ -24,7 +24,8 @@ const NotFound = () => (
 
 const LandingPage = () => {
   const token = useSelector((state: RootState) => state.auth.token);
-  return token ? <Navigate to="/home" /> : <Navigate to="/cadastro" />;
+  // return token ? <Navigate to="/home" /> : <Navigate to="/cadastro" />;
+  return token;
 };
 
 const router = createBrowserRouter([
