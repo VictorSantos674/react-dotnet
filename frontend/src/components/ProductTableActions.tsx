@@ -12,6 +12,9 @@ export default function ProductTableActions({ id, onDelete, loading }: Props) {
 
   return (
     <Space>
+      <Button type="link" onClick={() => navigate(`/produtos/${id}`)}>
+        Ver
+      </Button>
       <Button type="link" onClick={() => navigate(`/produtos/editar/${id}`)}>
         Editar
       </Button>

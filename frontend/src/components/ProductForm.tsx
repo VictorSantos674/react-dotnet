@@ -1,5 +1,5 @@
 import { Form, Input, InputNumber, Button, Typography } from 'antd';
-import Card from 'antd/es/card/Card'; 
+import Card from 'antd/es/card/Card';
 import { Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type ProductFormValues, productFormSchema } from '@/validations/productFormSchema';
@@ -24,6 +24,7 @@ export default function ProductForm({
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
     defaultValues: defaultValues || {
@@ -33,15 +34,18 @@ export default function ProductForm({
     },
   });
 
+  const handleFormSubmit = async (data: ProductFormValues) => {
+    await onSubmit(data);
+    reset(); 
+  };
+
   return (
     <Card style={{ maxWidth: 600, margin: '0 auto' }}>
-      <Title level={4}>{submitText === 'Salvar' ? 'Cadastrar Produto' : 'Editar Produto'}</Title>
-      <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
-        <Form.Item
-          label="Nome"
-          validateStatus={errors.nome ? 'error' : ''}
-          help={errors.nome?.message}
-        >
+      <Title level={4}>
+        {submitText === 'Salvar' ? 'Cadastrar Produto' : 'Editar Produto'}
+      </Title>
+      <Form layout="vertical" onFinish={handleSubmit(handleFormSubmit)}>
+        <Form.Item label="Nome" validateStatus={errors.nome ? 'error' : ''} help={errors.nome?.message}>
           <Controller
             name="nome"
             control={control}
@@ -49,11 +53,7 @@ export default function ProductForm({
           />
         </Form.Item>
 
-        <Form.Item
-          label="Preço"
-          validateStatus={errors.preco ? 'error' : ''}
-          help={errors.preco?.message}
-        >
+        <Form.Item label="Preço" validateStatus={errors.preco ? 'error' : ''} help={errors.preco?.message}>
           <Controller
             name="preco"
             control={control}
