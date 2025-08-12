@@ -3,14 +3,25 @@
   line-height: 1.5;
   font-weight: 400;
 
-  --color-primary: #058ED9;
-  --color-dark-bg: #483D3F;
-  --color-light-bg: #F4EBD9;
-  --color-neutral: #A39A92;
-  --color-accent: #77685D;
+  --color-primary: #564787;   /* Roxo azulado principal */
+  --color-secondary: #9AD4D6; /* Azul claro secundário */
+  --color-background: #F2FDFF;/* Fundo bem claro */
+  --color-card: #DBCBD8;      /* Cartões */
+  --color-text: #101935;      /* Texto escuro */
+  --color-accent: #564787;    /* Destaque */
 
-  --form-border-light: #A39A92;
-  --form-border-dark: #77685D;
+  --input-bg: #ffffff; /* Campos sempre brancos */
+}
+
+[data-theme="dark"] {
+  --color-primary: #3D3560;   /* Roxo azulado mais escuro */
+  --color-secondary: #6FAEB0; /* Azul claro escurecido */
+  --color-background: #0D141F;/* Fundo quase preto */
+  --color-card: #2B273A;      /* Cartões escuros */
+  --color-text: #E6E8F0;      /* Texto claro */
+  --color-accent: #6FAEB0;    /* Destaque mais suave */
+
+  --input-bg: #ffffff; /* Campos sempre brancos */
 }
 
 .ant-input,
@@ -70,15 +81,16 @@ a:hover {
   color: #535bf2;
 }
 
-body {
+body, html, #root {
   margin: 0;
   padding: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  background-color: var(--color-light-bg);
-  color: var(--color-dark-bg);
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
 }
 
 h1 {
