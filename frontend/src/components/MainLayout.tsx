@@ -1,6 +1,6 @@
 import { Layout, Menu, Switch } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const { Header, Content, Footer } = Layout;
 
@@ -8,13 +8,9 @@ const MainLayout = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
 
-  const colors = {
-    primary: '#058ED9',
-    darkBg: '#483D3F',
-    lightBg: '#F4EBD9',
-    neutral: '#A39A92',
-    accent: '#77685D',
-  };
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
 
   const menuItems = [
     { label: <Link to="/home">Home</Link>, key: '/home' },
@@ -24,12 +20,12 @@ const MainLayout = () => {
   ];
 
   return (
-    <Layout style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <Layout style={{ minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column' }}>
       <Header
         style={{
           display: 'flex',
           alignItems: 'center',
-          background: isDarkMode ? colors.darkBg : colors.primary,
+          background: 'var(--color-primary)',
           position: 'fixed',
           top: 0,
           width: '100%',
@@ -63,8 +59,8 @@ const MainLayout = () => {
           flex: 1,
           padding: '2rem',
           paddingTop: '6rem',
-          background: isDarkMode ? colors.darkBg : colors.lightBg,
-          color: isDarkMode ? colors.lightBg : colors.darkBg,
+          background: 'var(--color-background)',
+          color: 'var(--color-text)',
           width: '100%',
           overflowX: 'hidden',
         }}
@@ -75,7 +71,7 @@ const MainLayout = () => {
       <Footer
         style={{
           textAlign: 'center',
-          background: isDarkMode ? colors.accent : colors.neutral,
+          background: 'var(--color-primary)',
           color: '#fff',
           marginTop: 'auto',
         }}

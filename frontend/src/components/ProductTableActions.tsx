@@ -12,10 +12,10 @@ export default function ProductTableActions({ id, onDelete, loading }: Props) {
 
   return (
     <Space>
-      <Button type="link" onClick={() => navigate(`/produtos/${id}`)}>
+      <Button type="link" style={{ color: 'var(--color-accent)' }} onClick={() => navigate(`/produtos/${id}`)}>
         Ver
       </Button>
-      <Button type="link" onClick={() => navigate(`/produtos/editar/${id}`)}>
+      <Button type="link" style={{ color: 'var(--color-secondary)' }} onClick={() => navigate(`/produtos/editar/${id}`)}>
         Editar
       </Button>
       <Popconfirm

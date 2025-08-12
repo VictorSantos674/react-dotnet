@@ -24,7 +24,6 @@ export default function ProductForm({
     control,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
     defaultValues: defaultValues || {
@@ -34,37 +33,62 @@ export default function ProductForm({
     },
   });
 
-  const handleFormSubmit = async (data: ProductFormValues) => {
-    await onSubmit(data);
-    reset(); 
-  };
-
   return (
-    <Card style={{ maxWidth: 600, margin: '0 auto' }}>
-      <Title level={4}>
+    <Card
+      style={{
+        maxWidth: 600,
+        margin: '0 auto',
+        background: 'var(--color-card)',
+        borderRadius: '12px',
+      }}
+    >
+      <Title level={4} style={{ color: 'var(--color-primary-dark)' }}>
         {submitText === 'Salvar' ? 'Cadastrar Produto' : 'Editar Produto'}
       </Title>
-      <Form layout="vertical" onFinish={handleSubmit(handleFormSubmit)}>
-        <Form.Item label="Nome" validateStatus={errors.nome ? 'error' : ''} help={errors.nome?.message}>
+      <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
+        <Form.Item
+          label={<span style={{ color: 'var(--color-text)' }}>Nome</span>}
+          validateStatus={errors.nome ? 'error' : ''}
+          help={errors.nome?.message}
+        >
           <Controller
             name="nome"
             control={control}
-            render={({ field }) => <Input {...field} placeholder="Nome do produto" />}
-          />
-        </Form.Item>
-
-        <Form.Item label="Preço" validateStatus={errors.preco ? 'error' : ''} help={errors.preco?.message}>
-          <Controller
-            name="preco"
-            control={control}
             render={({ field }) => (
-              <InputNumber {...field} min={0} style={{ width: '100%' }} placeholder="Preço" />
+              <Input
+                {...field}
+                placeholder="Nome do produto"
+                style={{ borderRadius: '8px', borderColor: 'var(--color-accent)' }}
+              />
             )}
           />
         </Form.Item>
 
         <Form.Item
-          label="Descrição"
+          label={<span style={{ color: 'var(--color-text)' }}>Preço</span>}
+          validateStatus={errors.preco ? 'error' : ''}
+          help={errors.preco?.message}
+        >
+          <Controller
+            name="preco"
+            control={control}
+            render={({ field }) => (
+              <InputNumber
+                {...field}
+                min={0}
+                style={{
+                  width: '100%',
+                  borderRadius: '8px',
+                  borderColor: 'var(--color-accent)',
+                }}
+                placeholder="Preço"
+              />
+            )}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label={<span style={{ color: 'var(--color-text)' }}>Descrição</span>}
           validateStatus={errors.descricao ? 'error' : ''}
           help={errors.descricao?.message}
         >
@@ -72,13 +96,27 @@ export default function ProductForm({
             name="descricao"
             control={control}
             render={({ field }) => (
-              <Input.TextArea {...field} placeholder="Descrição do produto" rows={4} />
+              <Input.TextArea
+                {...field}
+                placeholder="Descrição do produto"
+                rows={4}
+                style={{ borderRadius: '8px', borderColor: 'var(--color-accent)' }}
+              />
             )}
           />
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading} block>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={loading}
+            block
+            style={{
+              backgroundColor: 'var(--color-accent)',
+              borderColor: 'var(--color-accent)',
+            }}
+          >
             {submitText}
           </Button>
         </Form.Item>
