@@ -16,6 +16,7 @@ import {
   Col,
   Space,
 } from 'antd';
+import Card from 'antd/es/card/Card';
 import type { ColumnsType } from 'antd/es/table';
 import { useState, type SetStateAction, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -56,7 +57,14 @@ export default function ProdutoList() {
 
   const columns: ColumnsType<Product> = [
     { title: 'Nome', dataIndex: 'nome', key: 'nome' },
-    { title: 'Preço', dataIndex: 'preco', key: 'preco' },
+    {
+      title: 'Preço',
+      dataIndex: 'preco',
+      key: 'preco',
+      render: (preco) => (
+        <span style={{ color: 'var(--color-accent)' }}>R$ {preco.toFixed(2)}</span>
+      ),
+    },
     { title: 'Descrição', dataIndex: 'descricao', key: 'descricao' },
     {
       title: 'Ações',
@@ -69,12 +77,6 @@ export default function ProdutoList() {
         />
       ),
     },
-    {
-      title: 'Preço',
-      dataIndex: 'preco',
-      key: 'preco',
-      render: (preco) => `R$ ${Number(preco).toFixed(2)}`
-    }
   ];
 
   const filteredData = useMemo(() => {
@@ -85,16 +87,29 @@ export default function ProdutoList() {
   }, [searchTerm, paginatedData]);
 
   return (
-    <div style={{ padding: '1rem' }}>
+    <Card
+      style={{
+        background: 'var(--color-card)',
+        borderRadius: '12px',
+        padding: '1rem',
+      }}
+    >
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <Row justify="space-between" align="middle">
           <Col>
-            <Title level={3} style={{ marginBottom: 0 }}>
+            <Title level={3} style={{ color: 'var(--color-primary-dark)', marginBottom: 0 }}>
               Lista de Produtos
             </Title>
           </Col>
           <Col>
-            <Button type="primary" onClick={() => navigate('/produtos/novo')}>
+            <Button
+              type="primary"
+              style={{
+                backgroundColor: 'var(--color-accent)',
+                borderColor: 'var(--color-accent)',
+              }}
+              onClick={() => navigate('/produtos/novo')}
+            >
               Novo Produto
             </Button>
           </Col>
@@ -107,6 +122,10 @@ export default function ProdutoList() {
               value={searchTerm}
               onChange={(e: { target: { value: SetStateAction<string>; }; }) => setSearchTerm(e.target.value)}
               allowClear
+              style={{
+                borderRadius: '8px',
+                borderColor: 'var(--color-accent)',
+              }}
             />
           </Col>
         </Row>
@@ -138,9 +157,14 @@ export default function ProdutoList() {
             locale={{
               emptyText: <Empty description="Nenhum produto encontrado" />,
             }}
+            style={{
+              background: 'var(--color-card)',
+              borderRadius: '8px',
+              overflow: 'hidden',
+            }}
           />
         )}
       </Space>
-    </div>
+    </Card>
   );
 }
