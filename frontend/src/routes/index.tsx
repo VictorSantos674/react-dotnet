@@ -13,6 +13,7 @@ import Dashboard from '@/pages/Dashboard';
 import ProdutoSearch from '@/pages/ProdutoSearch';
 import { useSelector } from 'react-redux';
 import type { RootState } from '@/store';
+import ProdutoDetalhes from '@/pages/ProdutoDetalhes';
 
 const NotFound = () => (
   <div style={{ textAlign: 'center', padding: '3rem' }}>
@@ -46,6 +47,7 @@ const router = createBrowserRouter([
           { path: 'dashboard', element: <Dashboard /> },
           { path: 'produtos', element: <ProdutoList /> },
           { path: 'produtos/novo', element: <Produto /> },
+          { path: 'produtos/:id', element: <ProdutoDetalhes /> },
           { path: 'produtos/editar/:id', element: <ProdutoEdit /> },
         ],
       },
