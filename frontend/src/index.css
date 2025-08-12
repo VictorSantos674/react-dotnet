@@ -3,9 +3,31 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --color-primary: #058ED9;
+  --color-dark-bg: #483D3F;
+  --color-light-bg: #F4EBD9;
+  --color-neutral: #A39A92;
+  --color-accent: #77685D;
+
+  --form-border-light: #A39A92;
+  --form-border-dark: #77685D;
+}
+
+.ant-input,
+.ant-input-number,
+.ant-select-selector,
+.ant-textarea {
+  border-radius: 6px !important;
+  border-color: var(--form-border-light);
+}
+
+.ant-input:focus,
+.ant-input-focused,
+.ant-input-number:focus,
+.ant-select-focused,
+.ant-textarea:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 2px rgba(5, 142, 217, 0.2) !important;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,6 +38,27 @@
 .ant-layout-header {
   padding: 0 20px;
   line-height: normal; 
+}
+
+/* Botões */
+.ant-btn-primary {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+}
+
+.ant-btn-primary:hover {
+  background-color: #0477b6 !important;
+  border-color: #0477b6 !important;
+}
+
+/* Tabelas */
+.ant-table-thead > tr > th {
+  background-color: var(--color-neutral) !important;
+  color: white !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: rgba(5, 142, 217, 0.1) !important;
 }
 
 a {
@@ -34,6 +77,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--color-light-bg);
+  color: var(--color-dark-bg);
 }
 
 h1 {
