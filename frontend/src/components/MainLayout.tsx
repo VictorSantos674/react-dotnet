@@ -8,6 +8,14 @@ const MainLayout = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
 
+  const colors = {
+    primary: '#058ED9',
+    darkBg: '#483D3F',
+    lightBg: '#F4EBD9',
+    neutral: '#A39A92',
+    accent: '#77685D',
+  };
+
   const menuItems = [
     { label: <Link to="/home">Home</Link>, key: '/home' },
     { label: <Link to="/produtos">Produtos</Link>, key: '/produtos' },
@@ -21,7 +29,7 @@ const MainLayout = () => {
         style={{
           display: 'flex',
           alignItems: 'center',
-          background: isDarkMode ? '#483D3F' : '#058ED9',
+          background: isDarkMode ? colors.darkBg : colors.primary,
           position: 'fixed',
           top: 0,
           width: '100%',
@@ -55,8 +63,8 @@ const MainLayout = () => {
           flex: 1,
           padding: '2rem',
           paddingTop: '6rem',
-          background: isDarkMode ? '#483D3F' : '#F4EBD9',
-          color: isDarkMode ? '#F4EBD9' : '#483D3F',
+          background: isDarkMode ? colors.darkBg : colors.lightBg,
+          color: isDarkMode ? colors.lightBg : colors.darkBg,
           width: '100%',
           overflowX: 'hidden',
         }}
@@ -67,7 +75,7 @@ const MainLayout = () => {
       <Footer
         style={{
           textAlign: 'center',
-          background: isDarkMode ? '#77685D' : '#A39A92',
+          background: isDarkMode ? colors.accent : colors.neutral,
           color: '#fff',
           marginTop: 'auto',
         }}
