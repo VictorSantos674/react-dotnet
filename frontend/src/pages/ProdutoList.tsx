@@ -69,6 +69,12 @@ export default function ProdutoList() {
         />
       ),
     },
+    {
+      title: 'Preço',
+      dataIndex: 'preco',
+      key: 'preco',
+      render: (preco) => `R$ ${Number(preco).toFixed(2)}`
+    }
   ];
 
   const filteredData = useMemo(() => {
