@@ -97,7 +97,7 @@ export default function ProdutoList() {
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <Row justify="space-between" align="middle">
           <Col>
-            <Title level={3} style={{ color: 'var(--color-primary-dark)', marginBottom: 0 }}>
+            <Title level={3} style={{ color: 'var(--color-text)', marginBottom: 0 }}>
               Lista de Produtos
             </Title>
           </Col>
