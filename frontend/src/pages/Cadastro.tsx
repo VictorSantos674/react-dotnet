@@ -24,7 +24,7 @@ export default function Cadastro() {
         message.success('Cadastro realizado com sucesso! Faça login para continuar.');
         navigate('/login');
       }
-    } catch (err) {
+    } catch {
       message.error('Erro ao cadastrar. Verifique os dados e tente novamente.');
     }
   };
@@ -32,8 +32,16 @@ export default function Cadastro() {
   return (
     <Row justify="center" align="middle" style={{ minHeight: '100vh', padding: '1rem' }}>
       <Col xs={24} sm={16} md={12} lg={8}>
-        <Card>
-          <Title level={3} style={{ textAlign: 'center' }}>Cadastro</Title>
+        <Card
+          style={{
+            background: 'var(--color-card)',
+            borderRadius: '12px',
+            padding: '1.5rem',
+          }}
+        >
+          <Title level={3} style={{ textAlign: 'center', color: 'var(--color-text)' }}>
+            Cadastro
+          </Title>
           <Form layout="vertical" onFinish={handleSubmit}>
             <Form.Item name="nome" label="Nome" rules={[{ required: true }]}>
               <Input placeholder="Digite seu nome" />
