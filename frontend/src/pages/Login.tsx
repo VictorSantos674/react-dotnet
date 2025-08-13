@@ -21,7 +21,7 @@ export default function Login() {
       dispatch(setToken(response.token));
       message.success('Login realizado com sucesso!');
       navigate(from, { replace: true });
-    } catch (err) {
+    } catch {
       message.error('Email ou senha inválidos');
     }
   };
@@ -29,9 +29,17 @@ export default function Login() {
   return (
     <Row justify="center" align="middle" style={{ minHeight: '100vh', padding: '1rem' }}>
       <Col xs={24} sm={16} md={12} lg={8}>
-        <Card>
-          <Title level={3} style={{ textAlign: 'center' }}>Login</Title>
-          <p style={{ textAlign: 'center', marginTop: '1rem' }}>
+        <Card
+          style={{
+            background: 'var(--color-card)',
+            borderRadius: '12px',
+            padding: '1.5rem',
+          }}
+        >
+          <Title level={3} style={{ textAlign: 'center', color: 'var(--color-text)' }}>
+            Login
+          </Title>
+          <p style={{ textAlign: 'center', marginTop: '1rem', color: 'var(--color-text)' }}>
             Ainda não tem uma conta? <a href="/cadastro">Cadastre-se</a>
           </p>
           <Form layout="vertical" onFinish={handleSubmit}>
