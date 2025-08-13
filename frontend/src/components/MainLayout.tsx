@@ -21,29 +21,14 @@ const MainLayout = () => {
 
   return (
     <Layout style={{ minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column' }}>
-      <Header
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          background: 'var(--color-primary)',
-          position: 'fixed',
-          top: 0,
-          width: '100%',
-          zIndex: 1000,
-          padding: '0 2rem',
-          height: '64px',
-        }}
-      >
-        <div style={{ color: '#fff', fontWeight: 'bold', fontSize: '18px', marginRight: '2rem' }}>
-          Meu App
-        </div>
+      <Header className="app-header">
+        <div className="logo">Meu App</div>
 
         <Menu
-          theme="dark"
           mode="horizontal"
           selectedKeys={[location.pathname]}
           items={menuItems}
-          style={{ flex: 1, background: 'transparent' }}
+          className="app-menu"
         />
 
         <Switch
@@ -54,28 +39,11 @@ const MainLayout = () => {
         />
       </Header>
 
-      <Content
-        style={{
-          flex: 1,
-          padding: '2rem',
-          paddingTop: '6rem',
-          background: 'var(--color-background)',
-          color: 'var(--color-text)',
-          width: '100%',
-          overflowX: 'hidden',
-        }}
-      >
+      <Content className="app-content">
         <Outlet />
       </Content>
 
-      <Footer
-        style={{
-          textAlign: 'center',
-          background: 'var(--color-primary)',
-          color: '#fff',
-          marginTop: 'auto',
-        }}
-      >
+      <Footer className="app-footer">
         © {new Date().getFullYear()} Meu App Moderno
       </Footer>
     </Layout>
