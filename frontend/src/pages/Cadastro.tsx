@@ -19,7 +19,7 @@ export default function Cadastro() {
       if (response.token) {
         dispatch(setToken(response.token));
         message.success('Cadastro realizado e login efetuado com sucesso!');
-        navigate('/home'); 
+        navigate('/home');
       } else {
         message.success('Cadastro realizado com sucesso! Faça login para continuar.');
         navigate('/login');
@@ -32,14 +32,8 @@ export default function Cadastro() {
   return (
     <Row justify="center" align="middle" style={{ minHeight: '100vh', padding: '1rem' }}>
       <Col xs={24} sm={16} md={12} lg={8}>
-        <Card
-          style={{
-            background: 'var(--color-card)',
-            borderRadius: '12px',
-            padding: '1.5rem',
-          }}
-        >
-          <Title level={3} style={{ textAlign: 'center', color: 'var(--color-text)' }}>
+        <Card style={{ background: 'var(--color-card)', borderRadius: 8 }}>
+          <Title level={3} style={{ textAlign: 'center', color: 'var(--color-primary)' }}>
             Cadastro
           </Title>
           <Form layout="vertical" onFinish={handleSubmit}>
