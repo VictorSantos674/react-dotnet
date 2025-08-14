@@ -1,10 +1,5 @@
 import { Col, Row, Statistic, Typography, List, Avatar, Button } from 'antd';
-import {
-  ShoppingCartOutlined,
-  DollarOutlined,
-  UserOutlined,
-  PlusOutlined,
-} from '@ant-design/icons';
+import { ShoppingCartOutlined, DollarOutlined, UserOutlined, PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import Card from 'antd/es/card/Card';
 
@@ -13,22 +8,10 @@ const { Title } = Typography;
 export default function Home() {
   const navigate = useNavigate();
 
-  const stats = [ // Dados mockados apenas para exibição inicial
-    {
-      title: 'Produtos Cadastrados',
-      value: 128,
-      icon: <ShoppingCartOutlined style={{ fontSize: 24, color: 'var(--color-accent)' }} />,
-    },
-    {
-      title: 'Vendas do Mês',
-      value: 'R$ 12.540',
-      icon: <DollarOutlined style={{ fontSize: 24, color: 'var(--color-accent)' }} />,
-    },
-    {
-      title: 'Clientes Ativos',
-      value: 56,
-      icon: <UserOutlined style={{ fontSize: 24, color: 'var(--color-accent)' }} />,
-    },
+  const stats = [
+    { title: 'Produtos Cadastrados', value: 128, icon: <ShoppingCartOutlined style={{ fontSize: 24, color: 'var(--color-accent)' }} /> },
+    { title: 'Vendas do Mês', value: 'R$ 12.540', icon: <DollarOutlined style={{ fontSize: 24, color: 'var(--color-accent)' }} /> },
+    { title: 'Clientes Ativos', value: 56, icon: <UserOutlined style={{ fontSize: 24, color: 'var(--color-accent)' }} /> },
   ];
 
   const ultimosProdutos = [
@@ -39,14 +22,11 @@ export default function Home() {
 
   return (
     <div style={{ padding: '1rem' }}>
-      <Title level={2} style={{ color: 'var(--color-primary-dark)' }}>
+      <Title level={2} style={{ color: 'var(--color-primary)' }}>
         Dashboard CRM
       </Title>
-      <p style={{ color: 'var(--color-text)' }}>
-        Resumo das principais informações do sistema
-      </p>
+      <p style={{ color: 'var(--color-text)' }}>Resumo das principais informações do sistema</p>
 
-      {/* Estatísticas principais */}
       <Row gutter={[16, 16]} style={{ marginTop: '1rem' }}>
         {stats.map((stat, index) => (
           <Col xs={24} sm={12} md={8} key={index}>
@@ -62,13 +42,8 @@ export default function Home() {
         ))}
       </Row>
 
-      {/* Últimos produtos */}
       <Card
-        style={{
-          marginTop: '2rem',
-          background: 'var(--color-card)',
-          borderRadius: '12px',
-        }}
+        style={{ marginTop: '2rem', background: 'var(--color-card)', borderRadius: '12px' }}
         title={<span style={{ color: 'var(--color-text)' }}>Últimos Produtos</span>}
         extra={
           <Button
@@ -99,11 +74,7 @@ export default function Home() {
               <List.Item.Meta
                 avatar={<Avatar style={{ backgroundColor: 'var(--color-accent)' }}>{item.nome[0]}</Avatar>}
                 title={<span style={{ color: 'var(--color-text)' }}>{item.nome}</span>}
-                description={
-                  <span style={{ color: 'var(--color-secondary)' }}>
-                    R$ {item.preco.toFixed(2)}
-                  </span>
-                }
+                description={<span style={{ color: 'var(--color-secondary)' }}>R$ {item.preco.toFixed(2)}</span>}
               />
             </List.Item>
           )}
