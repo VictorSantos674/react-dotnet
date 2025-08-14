@@ -48,7 +48,7 @@ export default function ProdutoList() {
       await deleteProduct(id).unwrap();
       message.success('Produto excluído com sucesso!');
       refetch();
-    } catch (err) {
+    } catch {
       message.error('Erro ao excluir o produto.');
     } finally {
       setDeletingId(null);
@@ -97,7 +97,7 @@ export default function ProdutoList() {
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <Row justify="space-between" align="middle">
           <Col>
-            <Title level={3} style={{ color: 'var(--color-text)', marginBottom: 0 }}>
+            <Title level={3} style={{ color: 'var(--color-primary)', marginBottom: 0 }}>
               Lista de Produtos
             </Title>
           </Col>
@@ -120,7 +120,7 @@ export default function ProdutoList() {
             <Input
               placeholder="Buscar por nome"
               value={searchTerm}
-              onChange={(e: { target: { value: SetStateAction<string>; }; }) => setSearchTerm(e.target.value)}
+              onChange={(e: { target: { value: SetStateAction<string> } }) => setSearchTerm(e.target.value)}
               allowClear
               style={{
                 borderRadius: '8px',
