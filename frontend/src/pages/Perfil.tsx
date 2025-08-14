@@ -10,17 +10,8 @@ export default function Perfil() {
 
   return (
     <div style={{ padding: '2rem' }}>
-      <Card
-        bordered={false}
-        style={{
-          background: 'var(--color-card)',
-          borderRadius: '12px',
-          padding: '1.5rem',
-        }}
-      >
-        <Title level={3} style={{ color: 'var(--color-text)' }}>
-          Perfil do Usuário
-        </Title>
+      <Card bordered={false} style={{ background: 'var(--color-card)' }}>
+        <Title level={3} style={{ color: 'var(--color-primary)' }}>Perfil do Usuário</Title>
         <Descriptions bordered column={1}>
           <Descriptions.Item label="Nome">{nome || 'N/A'}</Descriptions.Item>
           <Descriptions.Item label="Email">{email || 'N/A'}</Descriptions.Item>
