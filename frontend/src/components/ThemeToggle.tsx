@@ -1,24 +1,27 @@
 import { Switch } from 'antd';
-import { useEffect, useState } from 'react';
-import { BulbOutlined, BulbFilled } from '@ant-design/icons';
+import { BulbOutlined, MoonOutlined } from '@ant-design/icons';
+import React from 'react';
 
-export default function ThemeToggle() {
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem('theme') === 'dark';
-  });
+interface ThemeToggleProps {
+  isDarkMode: boolean;
+  setIsDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-  useEffect(() => {
-    const theme = darkMode ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [darkMode]);
+const ThemeToggle: React.FC<ThemeToggleProps> = ({ isDarkMode, setIsDarkMode }) => {
+  const handleToggle = (checked: boolean) => {
+    setIsDarkMode(checked);
+    document.documentElement.setAttribute('data-theme', checked ? 'dark' : 'light');
+  };
 
   return (
     <Switch
-      checked={darkMode}
-      onChange={setDarkMode}
-      checkedChildren={<BulbFilled />}
+      checkedChildren={<MoonOutlined />}
       unCheckedChildren={<BulbOutlined />}
+      checked={isDarkMode}
+      onChange={handleToggle}
+      style={{ marginLeft: '1rem' }}
     />
   );
-}
+};
+
+export default ThemeToggle;
