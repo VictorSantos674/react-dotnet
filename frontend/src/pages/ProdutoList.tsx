@@ -87,13 +87,7 @@ export default function ProdutoList() {
   }, [searchTerm, paginatedData]);
 
   return (
-    <Card
-      style={{
-        background: 'var(--color-card)',
-        borderRadius: '12px',
-        padding: '1rem',
-      }}
-    >
+    <Card style={{ background: 'var(--color-card)', borderRadius: '12px', padding: '1rem' }}>
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <Row justify="space-between" align="middle">
           <Col>
@@ -120,7 +114,7 @@ export default function ProdutoList() {
             <Input
               placeholder="Buscar por nome"
               value={searchTerm}
-              onChange={(e: { target: { value: SetStateAction<string> } }) => setSearchTerm(e.target.value)}
+              onChange={(e: { target: { value: SetStateAction<string>; }; }) => setSearchTerm(e.target.value)}
               allowClear
               style={{
                 borderRadius: '8px',
