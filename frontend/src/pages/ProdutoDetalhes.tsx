@@ -1,25 +1,25 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useGetProductByIdQuery } from "@/services/api/endpoints/productApi";
-import { Typography, Spin, Alert, Button, Space } from "antd";
+import { useParams, useNavigate } from 'react-router-dom';
+import { useGetProductByIdQuery } from '@/services/api/endpoints/productApi';
+import { Typography, Button, Spin, Alert } from 'antd';
 import Card from 'antd/es/card/Card';
 
 const { Title, Paragraph } = Typography;
 
 export default function ProdutoDetalhes() {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const { data: product, isLoading, isError } = useGetProductByIdQuery(Number(id));
 
   if (isLoading) {
-    return <Spin tip="Carregando produto..." style={{ display: "block", marginTop: "2rem" }} />;
+    return <Spin tip="Carregando produto..." />;
   }
 
   if (isError || !product) {
     return (
       <Alert
-        message="Produto não encontrado"
-        description="Verifique se o produto existe ou tente novamente mais tarde."
+        message="Erro"
+        description="Produto não encontrado."
         type="error"
         showIcon
       />
@@ -29,33 +29,32 @@ export default function ProdutoDetalhes() {
   return (
     <Card
       style={{
+        background: 'var(--color-card)',
+        padding: '1.5rem',
         maxWidth: 600,
-        margin: "2rem auto",
-        borderColor: "var(--color-primary)",
+        margin: '0 auto',
       }}
     >
-      <Title level={3} style={{ color: "var(--color-primary)" }}>
+      <Title level={3} style={{ color: 'var(--color-primary)' }}>
         {product.nome}
       </Title>
-      <Paragraph>
-        <strong>Preço:</strong> R$ {Number(product.preco).toFixed(2)}
+      <Paragraph style={{ fontSize: '16px', marginBottom: '1rem' }}>
+        {product.descricao || 'Sem descrição'}
       </Paragraph>
-      <Paragraph>
-        <strong>Descrição:</strong> {product.descricao}
+      <Paragraph strong style={{ fontSize: '18px', color: 'var(--color-accent)' }}>
+        Preço: R$ {product.preco.toFixed(2)}
       </Paragraph>
-
-      <Space style={{ marginTop: "1rem" }}>
-        <Button onClick={() => navigate("/produtos")} style={{ borderColor: "var(--color-primary)" }}>
-          Voltar
-        </Button>
-        <Button
-          type="primary"
-          onClick={() => navigate(`/produtos/editar/${product.id}`)}
-          style={{ background: "var(--color-primary)", borderColor: "var(--color-primary)" }}
-        >
-          Editar Produto
-        </Button>
-      </Space>
+      <Button
+        type="primary"
+        onClick={() => navigate('/produtos')}
+        style={{
+          background: 'var(--color-accent)',
+          borderColor: 'var(--color-accent)',
+          marginTop: '1rem',
+        }}
+      >
+        Voltar
+      </Button>
     </Card>
   );
 }
