@@ -1,27 +1,27 @@
 :root {
-  --color-primary: #564787;   /* Azul arroxeado */
-  --color-secondary: #9AD4D6; /* Azul claro */
+  /* Light mode */
+  --color-primary: #564787;
+  --color-secondary: #9AD4D6;
   --color-background: #F2FDFF;
-  --color-card: #DBCBD8;
+  --color-card: #FFFFFF;
   --color-text: #101935;
   --color-accent: #564787;
-
   --input-bg: #ffffff;
 }
 
 [data-theme="dark"] {
-  --color-primary: #3A3566;
-  --color-secondary: #7CB8BA;
-  --color-background: #0F1826;
-  --color-card: #2A2F4A;
+  /* Dark mode */
+  --color-primary: #3D3560;
+  --color-secondary: #6FAEB0;
+  --color-background: #0D141F;
+  --color-card: #1C1C2A;
   --color-text: #E6E8F0;
-  --color-accent: #7CB8BA;
-
-  --input-bg: #ffffff; /* Sempre branco */
+  --color-accent: #6FAEB0;
+  --input-bg: #2B273A;
 }
 
-/* Layout geral */
-body, html, #root {
+/* Reset & Layout Base */
+html, body, #root {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -31,29 +31,30 @@ body, html, #root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
-/* Header */
+/* Cabeçalho */
+.ant-layout-header, .app-header {
+  background: var(--color-primary) !important;
+}
+
 .app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--color-primary);
   padding: 0 2rem;
   height: 64px;
-  position: fixed;
-  width: 100%;
-  z-index: 1000;
 }
 
 .app-header .logo {
-  color: white;
+  color: #fff;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 20px;
+  letter-spacing: 0.5px;
 }
 
+/* Menu */
 .app-menu {
-  flex: 1;
   background: transparent !important;
-  border-bottom: none;
+  border-bottom: none !important;
 }
 
 .app-menu .ant-menu-item-selected {
@@ -64,36 +65,36 @@ body, html, #root {
 
 /* Conteúdo */
 .app-content {
-  flex: 1;
   padding: 2rem;
   padding-top: 6rem;
   background-color: var(--color-background);
 }
 
-/* Footer */
-.app-footer {
+/* Rodapé */
+.ant-layout-footer, .app-footer {
+  background: var(--color-primary) !important;
+  color: #fff !important;
   text-align: center;
-  background-color: var(--color-primary);
-  color: white;
   padding: 1rem;
 }
 
 /* Botões */
 .ant-btn-primary {
-  background-color: var(--color-primary) !important;
-  border-color: var(--color-primary) !important;
+  background-color: var(--color-accent) !important;
+  border-color: var(--color-accent) !important;
 }
 
 .ant-btn-primary:hover {
-  background-color: var(--color-accent) !important;
-  border-color: var(--color-accent) !important;
+  background-color: var(--color-secondary) !important;
+  border-color: var(--color-secondary) !important;
 }
 
 /* Inputs */
 .ant-input,
 .ant-input-number,
 .ant-select-selector,
-.ant-textarea {
+.ant-input-password,
+textarea.ant-input {
   background-color: var(--input-bg) !important;
   border-radius: 6px !important;
   border: 1px solid var(--color-secondary) !important;
@@ -109,7 +110,7 @@ body, html, #root {
 /* Tabelas */
 .ant-table-thead > tr > th {
   background-color: var(--color-primary) !important;
-  color: white !important;
+  color: #fff !important;
 }
 
 .ant-table-tbody > tr:hover > td {
@@ -120,5 +121,5 @@ body, html, #root {
 .ant-card {
   background-color: var(--color-card) !important;
   border-radius: 8px;
-  border: none;
+  border: none !important;
 }
