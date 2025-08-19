@@ -3,6 +3,8 @@ export interface Product {
   nome: string;
   preco: number;
   descricao: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface PaginatedProductsResponse {
@@ -11,4 +13,10 @@ export interface PaginatedProductsResponse {
   pageNumber: number;
   pageSize: number;
   totalPages: number;
+}
+
+export interface ProductFilters {
+  searchTerm?: string;
+  minPrice?: number;
+  maxPrice?: number;
 }
