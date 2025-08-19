@@ -14,7 +14,7 @@ import {
   Empty,
   Row,
   Col,
-  Space,
+  Space
 } from 'antd';
 import Card from 'antd/es/card/Card';
 import type { ColumnsType } from 'antd/es/table';
@@ -56,7 +56,19 @@ export default function ProdutoList() {
   };
 
   const columns: ColumnsType<Product> = [
-    { title: 'Nome', dataIndex: 'nome', key: 'nome' },
+    {
+      title: 'Nome',
+      dataIndex: 'nome',
+      key: 'nome',
+      render: (_, record) => (
+        <a
+          onClick={() => navigate(`/produtos/${record.id}`)}
+          style={{ color: 'var(--color-accent)', fontWeight: 500 }}
+        >
+          {record.nome}
+        </a>
+      ),
+    },
     {
       title: 'Preço',
       dataIndex: 'preco',
@@ -81,17 +93,28 @@ export default function ProdutoList() {
 
   const filteredData = useMemo(() => {
     if (!searchTerm) return paginatedData?.data || [];
-    return paginatedData?.data?.filter((p) =>
-      p.nome.toLowerCase().includes(searchTerm.toLowerCase())
-    ) || [];
+    return (
+      paginatedData?.data?.filter((p) =>
+        p.nome.toLowerCase().includes(searchTerm.toLowerCase())
+      ) || []
+    );
   }, [searchTerm, paginatedData]);
 
   return (
-    <Card style={{ background: 'var(--color-card)', borderRadius: '12px', padding: '1rem' }}>
-      <Space direction="vertical" size="large" style={{ width: '100%' }}>
-        <Row justify="space-between" align="middle">
+    <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem' }}>
+      <Card
+        style={{
+          background: 'var(--color-card)',
+          borderRadius: '12px',
+          boxShadow: '0 4px 10px rgba(0,0,0,0.08)',
+        }}
+      >
+        <Row justify="space-between" align="middle" style={{ marginBottom: '1.5rem' }}>
           <Col>
-            <Title level={3} style={{ color: 'var(--color-primary)', marginBottom: 0 }}>
+            <Title
+              level={3}
+              style={{ color: 'var(--color-primary)', marginBottom: 0 }}
+            >
               Lista de Produtos
             </Title>
           </Col>
@@ -109,12 +132,14 @@ export default function ProdutoList() {
           </Col>
         </Row>
 
-        <Row gutter={[16, 16]} align="middle" style={{ maxWidth: 400 }}>
+        <Row gutter={[16, 16]} align="middle" style={{ maxWidth: 400, marginBottom: '1rem' }}>
           <Col span={24}>
             <Input
               placeholder="Buscar por nome"
               value={searchTerm}
-              onChange={(e: { target: { value: SetStateAction<string>; }; }) => setSearchTerm(e.target.value)}
+              onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                setSearchTerm(e.target.value)
+              }
               allowClear
               style={{
                 borderRadius: '8px',
@@ -158,7 +183,7 @@ export default function ProdutoList() {
             }}
           />
         )}
-      </Space>
-    </Card>
+      </Card>
+    </div>
   );
 }
