@@ -1,84 +1,50 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { jwtDecode } from 'jwt-decode';
-import { type TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import type { RootState, AppDispatch } from './index';
-
-interface TokenPayload {
-  nome: string;
-  email: string;
-  exp?: number;
-  iat?: number;
-  [key: string]: unknown;
-}
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { User } from '@/types/User';
 
 interface AuthState {
   token: string | null;
-  nome: string | null;
-  email: string | null;
+  user: User | null;
   isAuthenticated: boolean;
 }
 
 const initialState: AuthState = {
   token: localStorage.getItem('token'),
-  nome: null,
-  email: null,
-  isAuthenticated: false,
+  user: JSON.parse(localStorage.getItem('user') || 'null'),
+  isAuthenticated: !!localStorage.getItem('token'),
 };
 
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setToken: (state, action: PayloadAction<string>) => {
-      const decoded = jwtDecode<TokenPayload>(action.payload);
-      state.token = action.payload;
-      state.nome = decoded.nome;
-      state.email = decoded.email;
+    login: (state, action: PayloadAction<{ token: string; user: User }>) => {
+      state.token = action.payload.token;
+      state.user = action.payload.user;
       state.isAuthenticated = true;
-      localStorage.setItem('token', action.payload);
-    },
-    setCredentials: (state, action: PayloadAction<string>) => {
-      const decoded = jwtDecode<TokenPayload>(action.payload);
-      state.token = action.payload;
-      state.nome = decoded.nome;
-      state.email = decoded.email;
-      state.isAuthenticated = true;
-      localStorage.setItem('token', action.payload);
+      
+      localStorage.setItem('token', action.payload.token);
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
     },
     logout: (state) => {
       state.token = null;
-      state.nome = null;
-      state.email = null;
+      state.user = null;
       state.isAuthenticated = false;
+      
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
     },
-    initializeAuth: (state) => {
-      if (state.token) {
-        try {
-          const decoded = jwtDecode<TokenPayload>(state.token);
-          state.nome = decoded.nome;
-          state.email = decoded.email;
-          state.isAuthenticated = true;
-        } catch (error) {
-          state.token = null;
-          state.nome = null;
-          state.email = null;
-          state.isAuthenticated = false;
-          localStorage.removeItem('token');
-        }
+    updateUser: (state, action: PayloadAction<Partial<User>>) => {
+      if (state.user) {
+        state.user = { ...state.user, ...action.payload };
+        localStorage.setItem('user', JSON.stringify(state.user));
       }
     },
   },
 });
 
-export const { setToken, setCredentials, logout, initializeAuth } = authSlice.actions;
+export const { login, logout, updateUser } = authSlice.actions;
+export const selectIsAuthenticated = (state: { auth: AuthState }) => state.auth.isAuthenticated;
+export const selectCurrentUser = (state: { auth: AuthState }) => state.auth.user;
+export const selectAuthToken = (state: { auth: AuthState }) => state.auth.token;
+
 export default authSlice.reducer;
-export const useAppDispatch: () => AppDispatch = useDispatch;
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-export const selectIsAuthenticated = (state: RootState) => state.auth.isAuthenticated;
-export const selectCurrentToken = (state: RootState) => state.auth.token;
-export const selectCurrentUser = (state: RootState) => ({
-  nome: state.auth.nome,
-  email: state.auth.email,
-});
