@@ -1,49 +1,60 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-interface LoginRequest {
-  email: string;
-  senha: string;
-}
-
-interface LoginResponse {
-  token: string;
-}
-
-interface RegisterRequest {
-  nome: string;
-  email: string;
-  senha: string;
-}
-
-interface RegisterRequest {
-  nome: string;
-  email: string;
-  senha: string;
-}
-
-interface RegisterResponse {
-  token: string;
-}
+import type { LoginRequest, RegisterRequest, AuthResponse } from '@/types/User';
+import authSlice from '@/store/authSlice';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/api/auth' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${import.meta.env.VITE_API_BASE_URL}/api/auth`,
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
-    login: builder.mutation<LoginResponse, LoginRequest>({
+    login: builder.mutation<AuthResponse, LoginRequest>({
       query: (credentials) => ({
         url: '/login',
         method: 'POST',
         body: credentials,
       }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(authSlice.actions.login(data));
+        } catch (error) {
+          console.error('Login failed:', error);
+        }
+      },
     }),
-    registerUser: builder.mutation<RegisterResponse, RegisterRequest>({
-      query: (data) => ({
+    register: builder.mutation<AuthResponse, RegisterRequest>({
+      query: (userData) => ({
         url: '/register',
         method: 'POST',
-        body: data,
+        body: userData,
       }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(authSlice.actions.login(data));
+        } catch (error) {
+          console.error('Registration failed:', error);
+        }
+      },
+    }),
+    logout: builder.mutation<void, void>({
+      query: () => ({
+        url: '/logout',
+        method: 'POST',
+      }),
+      async onQueryStarted(_, { dispatch }) {
+        dispatch(authSlice.actions.logout());
+      },
     }),
   }),
 });
 
-export const { useLoginMutation, useRegisterUserMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation, useLogoutMutation } = authApi;
