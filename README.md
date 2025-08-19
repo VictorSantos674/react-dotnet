@@ -1,111 +1,258 @@
-# react-dotnet
+🚀 Sistema de Gerenciamento de Produtos - React + .NET
+Uma aplicação full-stack moderna para gerenciamento de produtos, desenvolvida com React no frontend e .NET no backend. Este projeto de nível profissional inclui autenticação JWT, design responsivo, gerenciamento de estado avançado e operações CRUD completas, demonstrando o uso de tecnologias e práticas de mercado.
 
-# Meus Estudos: React + .NET
+✨ Funcionalidades
+🔐 Autenticação JWT: Login e registro de usuários de forma segura.
 
-Este repositório contém o progresso dos meus estudos sobre **desenvolvimento front-end com [React (TypeScript)](https://reactjs.org/)** e **back-end com [ASP.NET Core (.NET 9)](https://dotnet.microsoft.com/)**.
+📱 Design Responsivo: Interface adaptável a diferentes dispositivos, construída com Ant Design.
 
----
-## Tecnologias
+🚀 Gerenciamento de Estado: Utiliza RTK Query para busca e cache eficientes de dados.
 
-### Frontend:
-- [React](https://reactjs.org/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [RTK Query (Redux Toolkit)](https://redux-toolkit.js.org/rtk-query/overview)
-- [Ant Design](https://ant.design/)
-- [Zod](https://zod.dev/) – Validação de formulários
-- [React Hook Form](https://react-hook-form.com/)
-- [React Router DOM](https://reactrouter.com/)
+📊 Gerenciamento de Produtos: CRUD completo (criar, ler, atualizar, deletar) com paginação e busca em tempo real.
 
-### Backend:
-- [.NET 9](https://dotnet.microsoft.com/)
-- [ASP.NET Web API](https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-9.0)
-- [Entity Framework Core](https://learn.microsoft.com/en-us/ef/core/)
-- Arquitetura em camadas (Domain, Infrastructure, WebAPI)
+🎨 Suporte a Temas: Alternância entre modos claro e escuro.
 
----
-## Estrutura
+🔍 Busca Avançada: Pesquisa de produtos em tempo real.
 
-📁 frontend/
-┣ 📁 src/
-┃ ┣ 📁 components/           # Componentes reutilizáveis (ex: ProductForm)
-┃ ┣ 📁 pages/                # Páginas principais (Produto.tsx, EditarProduto.tsx)
-┃ ┣ 📁 routes/               # Definição das rotas
-┃ ┣ 📁 services/
-┃ ┃ ┗ 📁 api/endpoints/      # Arquivos RTK Query
-┃ ┣ 📁 types/                # Tipagens (Product.ts)
-┃ ┣ 📁 validations/          # Schemas de validação (Zod)
-┃ ┗ 📄 store.ts              # Configuração do Redux
+🛡️ Validação de Formulários: Validação robusta de dados de entrada com Zod.
 
-📁 backend/
-┣ 📁 WebApis/Controllers/
-┣ 📁 Domain/
-┃ ┣ 📁 Interfaces/
-┃ ┗ 📁 Services/
-┣ 📁 Infraestructure/
-┃ ┗ 📁 Repository/
-┣ 📁 Entities/Entities/
-┗ 📄 Program.cs
+📈 Paginação: Carregamento eficiente de dados.
 
-📁 docs/
+🎯 Type Safety: Cobertura completa com TypeScript para um código mais seguro.
 
----
-## Funcionalidades
+🛠️ Stack Tecnológica
+Frontend
+React 18 + TypeScript: Biblioteca principal com tipagem estática.
 
-### Frontend:
-✅ Formulário de criação de produto com validação e feedback visual
+Redux Toolkit & RTK Query: Gerenciamento de estado e requisições de API.
 
-✅ Edição de produto em tela separada
+Ant Design: Biblioteca de componentes de UI.
 
-✅ Listagem de produtos com paginação e feedback de loading/erro
+React Hook Form + Zod: Gerenciamento e validação de formulários.
 
-✅ Exclusão com confirmação
+React Router v6: Roteamento da aplicação.
 
-✅ Integração com API usando RTK Query
+Axios: Cliente HTTP para o backend.
 
-✅ Estilização com Ant Design
+Backend
+.NET 9 + ASP.NET Core: Framework para a API RESTful.
 
-✅ Reaproveitamento de componentes (formulário)
+Entity Framework Core: ORM para acesso ao banco de dados SQL Server.
 
-### Backend:
-✅ API REST em .NET 9 com endpoints:
+Autenticação JWT Bearer: Padrão de segurança para APIs.
 
--GET /api/products
--GET /api/products/{id}
--POST /api/products
--PUT /api/products/{id}
--DELETE /api/products/{id}
+Repository Pattern & Dependency Injection: Padrões de projeto para código organizado.
 
-✅ Separação por camadas (Controller, Services, Repository)
+Swagger/OpenAPI: Geração de documentação interativa da API.
 
-✅ Validação básica e suporte a erros
+xUnit: Framework para testes unitários.
 
-✅ Estrutura pronta para expansão (ex: autenticação)
+DevOps
+Docker: Conteinerização da aplicação.
 
----
-## Como Rodar o Projeto
-✅ Backend (.NET)
+GitHub Actions: Pipelines de Integração Contínua e Entrega Contínua (CI/CD).
 
+Configuração baseada em ambiente: Gerenciamento de variáveis de ambiente.
+
+📦 Estrutura do Projeto
+react-dotnet/
+├── .github/              # Workflows do GitHub Actions
+├── backend/              # Aplicação .NET Web API
+│   ├── Controllers/      # Endpoints da API
+│   ├── Entities/         # Entidades do banco de dados
+│   ├── Infrastructure/   # Repositórios e persistência
+│   └── Program.cs
+│
+├── frontend/             # Aplicação React + TypeScript
+│   ├── src/
+│   │   ├── components/   # Componentes UI reutilizáveis
+│   │   ├── pages/        # Páginas da aplicação
+│   │   ├── services/     # API + RTK Query
+│   │   ├── store/        # Redux store
+│   │   └── types/        # Definições TypeScript
+│   └── package.json
+│
+├── docker/               # Arquivos de configuração Docker
+└── README.md
+
+
+🚀 Como Executar
+Pré-requisitos
+Node.js 18+
+
+.NET 9 SDK
+
+SQL Server (ou Docker)
+
+Git
+
+Instalação e Execução
+Primeiro, clone o repositório e navegue até a pasta do projeto:
+
+git clone https://github.com/VictorSantos674/react-dotnet.git
+cd react-dotnet
+
+
+🔹 Backend
 cd backend
 dotnet restore
 dotnet build
 dotnet run
 
-✅ Frontend (React + Vite)
 
+🔹 Frontend
 cd frontend
 npm install
 npm run dev
 
----
 
-## 📌 Próximos Passos
----
+🔹 Configuração de Ambiente
+Crie arquivos .env na raiz das pastas backend e frontend para configurar as variáveis de ambiente:
 
-## 👨‍💻 Autor
-Desenvolvido por [Victor Souza](https://github.com/VictorSantos674) 👋
-Projeto pessoal com foco em aprendizado e boas práticas de desenvolvimento frontend + backend.
----
+backend/.env
 
-## 📄 Licença
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
----
+Jwt__Key=SuaChaveSuperSecretaAquiCom32Caracteres
+Jwt__Issuer=SuaApp
+Jwt__Audience=SeusUsuarios
+
+
+frontend/.env
+
+VITE_API_BASE_URL=http://localhost:5000
+
+
+🔹 Docker
+Você também pode subir a aplicação usando Docker Compose:
+
+docker-compose up -d
+
+
+📚 Documentação da API
+A documentação da API pode ser acessada em http://localhost:5000/swagger após a execução do backend.
+
+Endpoints Principais
+Método
+
+Endpoint
+
+Descrição
+
+POST
+
+/api/auth/login
+
+Login de usuário
+
+POST
+
+/api/auth/register
+
+Registro de novo usuário
+
+GET
+
+/api/produtos
+
+Lista produtos (paginado)
+
+GET
+
+/api/produtos/{id}
+
+Obtém produto por ID
+
+POST
+
+/api/produtos
+
+Cria um novo produto
+
+PUT
+
+/api/produtos/{id}
+
+Atualiza um produto existente
+
+DELETE
+
+/api/produtos/{id}
+
+Deleta um produto
+
+GET
+
+/api/produtos/buscar-por-nome/{nome}
+
+Busca produtos por nome
+
+🧪 Testes
+Frontend
+cd frontend
+npm test                 # Executa os testes unitários
+npm run test:coverage    # Gera relatório de cobertura de testes
+npm run test:e2e         # Executa os testes de ponta a ponta
+
+
+Backend
+cd backend
+dotnet test
+dotnet test --filter "Category=Unit" # Executa apenas testes unitários
+
+
+🚀 Deploy
+Build de Produção
+# Frontend
+cd frontend
+npm run build
+
+# Backend
+cd backend
+dotnet publish -c Release
+
+
+Opções de Deploy
+Frontend: Vercel, Netlify
+
+Backend: Azure App Service, AWS Elastic Beanstalk
+
+Infra: Docker / Kubernetes
+
+🤝 Como Contribuir
+Faça um fork do projeto.
+
+Crie uma nova branch para sua feature:
+
+git checkout -b feature/MinhaFeature
+
+
+Commit suas mudanças:
+
+git commit -m "Adiciona MinhaFeature"
+
+
+Faça o push para a branch:
+
+git push origin feature/MinhaFeature
+
+
+Abra um Pull Request 🎉
+
+📝 Padrões de Código
+Frontend: Utiliza TypeScript em modo estrito, ESLint e Prettier para padronização. A arquitetura é componentizada e segue as melhores práticas do Redux Toolkit.
+
+Backend: Adota o padrão de Clean Architecture e Repository Pattern, com injeção de dependência e tratamento de erros robusto.
+
+🐛 Solução de Problemas
+Erro de conexão com o banco de dados: Verifique se sua string de conexão está correta e se o SQL Server está em execução.
+
+Problema com autenticação JWT: Confirme se as chaves, issuer e audience estão configuradas corretamente no arquivo .env.
+
+Erro de CORS: Certifique-se de que a URL do frontend está permitida nas configurações do backend.
+
+📄 Licença
+Este projeto é licenciado sob a MIT License. Veja o arquivo LICENSE para mais detalhes.
+
+👨‍💻 Autor
+Victor Souza
+[GitHub]()
+[LinkedIn]()
