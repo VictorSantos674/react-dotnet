@@ -27,13 +27,18 @@ export default function Login() {
   };
 
   return (
-    <Row justify="center" align="middle" style={{ minHeight: '100vh', padding: '1rem' }}>
+    <Row justify="center" align="middle" style={{ minHeight: '100vh', padding: '2rem' }}>
       <Col xs={24} sm={16} md={12} lg={8}>
-        <Card>
+        <Card
+          style={{
+            borderRadius: '12px',
+            boxShadow: '0 4px 10px rgba(0,0,0,0.08)',
+          }}
+        >
           <Title level={3} style={{ textAlign: 'center', color: 'var(--color-primary)' }}>
             Login
           </Title>
-          <p style={{ textAlign: 'center', marginTop: '1rem' }}>
+          <p style={{ textAlign: 'center', marginBottom: '1rem' }}>
             Ainda não tem uma conta? <a href="/cadastro">Cadastre-se</a>
           </p>
           <Form layout="vertical" onFinish={handleSubmit}>
