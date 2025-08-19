@@ -1,5 +1,5 @@
-import { Form, Input, Button, Typography, Row, Col, message } from 'antd';
 import Card from 'antd/es/card/Card';
+import { Form, Input, Button, Typography, Row, Col, message } from 'antd';
 import { useRegisterUserMutation } from '@/services/api/endpoints/authApi';
 import { useDispatch } from 'react-redux';
 import { setToken } from '@/store/authSlice';
@@ -30,9 +30,14 @@ export default function Cadastro() {
   };
 
   return (
-    <Row justify="center" align="middle" style={{ minHeight: '100vh', padding: '1rem' }}>
+    <Row justify="center" align="middle" style={{ minHeight: '100vh', padding: '2rem' }}>
       <Col xs={24} sm={16} md={12} lg={8}>
-        <Card>
+        <Card
+          style={{
+            borderRadius: '12px',
+            boxShadow: '0 4px 10px rgba(0,0,0,0.08)',
+          }}
+        >
           <Title level={3} style={{ textAlign: 'center', color: 'var(--color-primary)' }}>
             Cadastro
           </Title>
