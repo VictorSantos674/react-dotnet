@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Domain.Interfaces;
 using Entities.Entities;
-using Infraestructure.Repository;
+using Entities.Dtos;
+using Infraestructure.Configuration;
 
 namespace WebApis.Controllers
 {
@@ -13,66 +12,100 @@ namespace WebApis.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly ContextBase _context;
+        private readonly IAuthService _authService;
 
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, ContextBase context, IAuthService authService)
         {
             _configuration = configuration;
+            _context = context;
+            _authService = authService;
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] User loginUser)
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
-            var user = UserRepository.GetUser(loginUser.Username, loginUser.Password);
-
-            if (user == null)
-                return Unauthorized("Usuário ou senha inválidos");
-
-            var token = GenerateJwtToken(user);
-            return Ok(new { token });
-        }
-
-        private string GenerateJwtToken(User user)
-        {
-            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!);
-            var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
+            try
             {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-            };
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new { message = "Dados inválidos", errors = ModelState.Values.SelectMany(v => v.Errors) });
+                }
 
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(2),
-                signingCredentials: credentials
-            );
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Username == loginDto.Username);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                if (user == null || !_authService.VerifyPassword(loginDto.Password, user.PasswordHash))
+                {
+                    return Unauthorized(new { message = "Usuário ou senha inválidos" });
+                }
+
+                var token = _authService.GenerateJwtToken(user);
+                
+                return Ok(new { 
+                    token, 
+                    user = new {
+                        user.Id,
+                        user.Name,
+                        user.Username,
+                        user.Email
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro interno do servidor", error = ex.Message });
+            }
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
+        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
-            var userExists = await _context.Users.AnyAsync(u => u.Email == dto.Email);
-            if (userExists) return BadRequest(new { message = "Usuário já registrado com esse e-mail" });
-
-            var passwordHash = _authService.HashPassword(dto.Password);
-            
-            var user = new User
+            try
             {
-                Name = dto.Name,
-                Email = dto.Email,
-                PasswordHash = passwordHash
-            };
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new { message = "Dados inválidos", errors = ModelState.Values.SelectMany(v => v.Errors) });
+                }
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+                // Verificar se usuário já existe
+                var userExists = await _context.Users
+                    .AnyAsync(u => u.Username == registerDto.Username || u.Email == registerDto.Email);
 
-            var token = _authService.GenerateJwtToken(user);
-            return Ok(new { token });
+                if (userExists)
+                {
+                    return BadRequest(new { message = "Usuário ou email já cadastrado" });
+                }
+
+                // Criar novo usuário
+                var user = new User
+                {
+                    Name = registerDto.Name,
+                    Email = registerDto.Email,
+                    Username = registerDto.Username,
+                    PasswordHash = _authService.HashPassword(registerDto.Password),
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+
+                var token = _authService.GenerateJwtToken(user);
+                
+                return Ok(new { 
+                    token, 
+                    user = new {
+                        user.Id,
+                        user.Name,
+                        user.Username,
+                        user.Email
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro interno do servidor", error = ex.Message });
+            }
         }
     }
 }
