@@ -101,4 +101,27 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// 🔧 CONFIGURAÇÃO DE MIGRAÇÃO AUTOMÁTICA E SEED DATA
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<ContextBase>();
+        
+        // Criar banco se não existir (mais simples que migrações)
+        context.Database.EnsureCreated();
+        
+        Console.WriteLine("✅ Banco de dados criado com sucesso!");
+        
+        // Inserir dados iniciais
+        await SeedData.Initialize(services);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "❌ Erro ao criar banco de dados");
+    }
+}
+
 app.Run();
