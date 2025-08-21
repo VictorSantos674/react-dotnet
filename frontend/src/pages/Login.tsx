@@ -2,27 +2,28 @@ import { Form, Input, Button, Typography, message, Row, Col } from 'antd';
 import Card from 'antd/es/card/Card';
 import { useLoginMutation } from '@/services/api/endpoints/authApi';
 import { useDispatch } from 'react-redux';
-import { setToken } from '@/store/authSlice';
+import { login } from '@/store/authSlice'; 
 import { useNavigate, useLocation } from 'react-router-dom';
+import type { LoginRequest } from '@/types/User';
 
 const { Title } = Typography;
 
 export default function Login() {
-  const [login, { isLoading }] = useLoginMutation();
+  const [loginMutation, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = (location.state as { from?: Location })?.from?.pathname || '/home';
+  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/home';
 
-  const handleSubmit = async (values: { email: string; senha: string }) => {
+  const handleSubmit = async (values: LoginRequest) => {
     try {
-      const response = await login(values).unwrap();
-      dispatch(setToken(response.token));
+      const response = await loginMutation(values).unwrap();
+      dispatch(login(response)); // ✅ Usar login action
       message.success('Login realizado com sucesso!');
       navigate(from, { replace: true });
     } catch {
-      message.error('Email ou senha inválidos');
+      message.error('Username ou senha inválidos');
     }
   };
 
@@ -41,11 +42,11 @@ export default function Login() {
           <p style={{ textAlign: 'center', marginBottom: '1rem' }}>
             Ainda não tem uma conta? <a href="/cadastro">Cadastre-se</a>
           </p>
-          <Form layout="vertical" onFinish={handleSubmit}>
-            <Form.Item name="email" label="Email" rules={[{ required: true }]}>
-              <Input placeholder="Digite seu email" />
+          <Form<LoginRequest> layout="vertical" onFinish={handleSubmit}>
+            <Form.Item name="username" label="Username" rules={[{ required: true }]}>
+              <Input placeholder="Digite seu username" />
             </Form.Item>
-            <Form.Item name="senha" label="Senha" rules={[{ required: true }]}>
+            <Form.Item name="password" label="Senha" rules={[{ required: true }]}>
               <Input.Password placeholder="Digite sua senha" />
             </Form.Item>
             <Form.Item>

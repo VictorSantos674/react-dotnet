@@ -5,8 +5,14 @@ import Card from 'antd/es/card/Card';
 
 const { Title } = Typography;
 
+interface ExtendedAuthState {
+  nome?: string;
+  email?: string;
+}
+
 export default function Perfil() {
-  const { nome, email } = useSelector((state: RootState) => state.auth);
+  const authState = useSelector((state: RootState) => state.auth);
+  const { nome, email } = authState as ExtendedAuthState;
 
   return (
     <div style={{ maxWidth: 600, margin: '0 auto', padding: '2rem' }}>
