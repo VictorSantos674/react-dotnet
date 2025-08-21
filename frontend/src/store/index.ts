@@ -1,7 +1,8 @@
+// frontend/src/store/index.ts
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authSlice';
-import { authApi } from '@/services/api/authApi';
-import { productApi } from '@/services/api/productApi';
+import { authApi } from '@/services/api/endpoints/authApi';
+import { productApi } from '@/services/api/endpoints/productApi';
 
 export const store = configureStore({
   reducer: {
@@ -17,4 +18,4 @@ export const store = configureStore({
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.getState;
+export type AppDispatch = typeof store.dispatch; 

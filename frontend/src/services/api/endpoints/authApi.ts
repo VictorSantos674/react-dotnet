@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { LoginRequest, RegisterRequest, AuthResponse } from '@/types/User';
-import authSlice from '@/store/authSlice';
+import { login, logout } from '@/store/authSlice'; // ✅ Corrigir import
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -24,7 +24,7 @@ export const authApi = createApi({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          dispatch(authSlice.actions.login(data));
+          dispatch(login(data)); // ✅ Usar action direto
         } catch (error) {
           console.error('Login failed:', error);
         }
@@ -39,7 +39,7 @@ export const authApi = createApi({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          dispatch(authSlice.actions.login(data));
+          dispatch(login(data)); // ✅ Usar action direto
         } catch (error) {
           console.error('Registration failed:', error);
         }
@@ -51,7 +51,7 @@ export const authApi = createApi({
         method: 'POST',
       }),
       async onQueryStarted(_, { dispatch }) {
-        dispatch(authSlice.actions.logout());
+        dispatch(logout()); // ✅ Usar action direto
       },
     }),
   }),
