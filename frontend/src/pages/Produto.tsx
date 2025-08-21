@@ -1,19 +1,19 @@
 import { Typography, message } from 'antd';
 import Card from 'antd/es/card/Card';
 import ProductForm from '@/components/ProductForm';
-import { useAddProductMutation } from '@/services/api/endpoints/productApi';
+import { useCreateProductMutation } from '@/services/api/endpoints/productApi'; 
 import type { ProductFormValues } from '@/validations/productFormSchema';
 import { useNavigate } from 'react-router-dom';
 
 const { Title } = Typography;
 
 export default function Produto() {
-  const [addProduct, { isLoading }] = useAddProductMutation();
+  const [createProduct, { isLoading }] = useCreateProductMutation(); 
   const navigate = useNavigate();
 
   const handleSubmit = async (data: ProductFormValues) => {
     try {
-      await addProduct(data).unwrap();
+      await createProduct(data).unwrap(); // ✅ Nome correto
       message.success('Produto cadastrado com sucesso!');
       navigate('/produtos');
     } catch {

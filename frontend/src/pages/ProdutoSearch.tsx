@@ -1,16 +1,17 @@
-import { useGetAllProductsQuery } from '@/services/api/endpoints/productApi';
+import { useGetProductsQuery } from '@/services/api/endpoints/productApi';
 import { Input, List, Typography, Spin, Alert, Empty } from 'antd';
 import { useState, type SetStateAction } from 'react';
+import type { Product } from '@/types/Product';
 
 const { Title } = Typography;
 
 export default function ProdutoSearch() {
   const [searchTerm, setSearchTerm] = useState('');
-  const { data, isLoading, isError } = useGetAllProductsQuery({ pageNumber: 1, pageSize: 100 });
+  const { data: products, isLoading, isError } = useGetProductsQuery(); 
 
-  const filteredProducts = data?.data?.filter((p) =>
+  const filteredProducts = (products || []).filter((p: Product) =>
     p.nome.toLowerCase().includes(searchTerm.toLowerCase())
-  ) || [];
+  );
 
   return (
     <div style={{ padding: '1rem' }}>
@@ -33,9 +34,9 @@ export default function ProdutoSearch() {
         <List
           bordered
           dataSource={filteredProducts}
-          renderItem={(item) => (
+          renderItem={(item: Product) => (
             <List.Item>
-              <strong>{item.nome}</strong> - R$ {item.preco}
+              <strong>{item.nome}</strong> - R$ {item.preco.toFixed(2)}
             </List.Item>
           )}
         />

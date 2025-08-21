@@ -13,8 +13,7 @@ import {
   Input,
   Empty,
   Row,
-  Col,
-  Space
+  Col
 } from 'antd';
 import Card from 'antd/es/card/Card';
 import type { ColumnsType } from 'antd/es/table';
@@ -94,7 +93,7 @@ export default function ProdutoList() {
   const filteredData = useMemo(() => {
     if (!searchTerm) return paginatedData?.data || [];
     return (
-      paginatedData?.data?.filter((p) =>
+      paginatedData?.data?.filter((p: { nome: string; }) =>
         p.nome.toLowerCase().includes(searchTerm.toLowerCase())
       ) || []
     );

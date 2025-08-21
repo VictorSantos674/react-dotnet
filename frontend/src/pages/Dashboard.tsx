@@ -1,15 +1,15 @@
 import { Col, Row, Typography, Spin, Alert } from 'antd';
-import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
-import { useGetAllProductsQuery } from '@/services/api/endpoints/productApi';
 import Card from 'antd/es/card/Card';
+import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import { useGetProductsQuery } from '@/services/api/endpoints/productApi';
 
 const { Title } = Typography;
 
 export default function Dashboard() {
-  const { data: products, isLoading, isError } = useGetAllProductsQuery({ pageNumber: 1, pageSize: 100 });
+  const { data: products, isLoading, isError } = useGetProductsQuery();
 
-  const totalProducts = products?.total || 0;
-  const totalUsers = 5; // 🔹 Pode substituir pela API de usuários futuramente
+  const totalProducts = products?.length || 0;
+  const totalUsers = 5;
 
   if (isLoading) {
     return <Spin tip="Carregando resumo..." style={{ display: 'block', margin: '2rem auto' }} />;
