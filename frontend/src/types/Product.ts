@@ -10,7 +10,7 @@ export interface Product {
 export interface PaginatedProductsResponse {
   data: Product[];
   total: number;
-  pageNumber: number;
+  page: number;
   pageSize: number;
   totalPages: number;
 }
