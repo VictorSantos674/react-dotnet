@@ -1,10 +1,11 @@
-import { Form, Input, Button, Typography, message, Row, Col } from 'antd';
+import { Form, Input, Button, Typography, Row, Col } from 'antd';
 import Card from 'antd/es/card/Card';
 import { useLoginMutation } from '@/services/api/endpoints/authApi';
 import { useDispatch } from 'react-redux';
 import { login } from '@/store/authSlice'; 
 import { useNavigate, useLocation } from 'react-router-dom';
 import type { LoginRequest } from '@/types/User';
+import { useToast } from '@/hooks/useToast';
 
 const { Title } = Typography;
 
@@ -13,17 +14,18 @@ export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const { showSuccess, showError } = useToast();
 
   const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/home';
 
   const handleSubmit = async (values: LoginRequest) => {
     try {
       const response = await loginMutation(values).unwrap();
-      dispatch(login(response)); // ✅ Usar login action
-      message.success('Login realizado com sucesso!');
+      dispatch(login(response));
+      showSuccess('Login realizado com sucesso!');
       navigate(from, { replace: true });
     } catch {
-      message.error('Username ou senha inválidos');
+      showError('Username ou senha inválidos');
     }
   };
 

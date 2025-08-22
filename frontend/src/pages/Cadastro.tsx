@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '@/store/authSlice'; 
 import { useNavigate } from 'react-router-dom';
 import type { RegisterRequest } from '@/types/User';
+import { useToast } from '@/hooks/useToast';
 
 const { Title } = Typography;
 
@@ -12,15 +13,16 @@ export default function Cadastro() {
   const [registerMutation, { isLoading }] = useRegisterMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { showSuccess, showError } = useToast();
 
   const handleSubmit = async (values: RegisterRequest) => {
     try {
       const response = await registerMutation(values).unwrap();
-      dispatch(login(response)); // ✅ Usar login action
-      message.success('Cadastro realizado e login efetuado com sucesso!');
+      dispatch(login(response));
+      showSuccess('Cadastro realizado e login efetuado com sucesso!');
       navigate('/home');
     } catch {
-      message.error('Erro ao cadastrar. Verifique os dados e tente novamente.');
+      showError('Erro ao cadastrar. Verifique os dados e tente novamente.');
     }
   };
 
