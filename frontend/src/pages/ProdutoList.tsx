@@ -1,6 +1,6 @@
 import {
   useDeleteProductMutation,
-  useGetProductsPaginatedQuery, // Changed from useGetAllProductsQuery
+  useGetProductsPaginatedQuery,
 } from '@/services/api/endpoints/productApi';
 import type { Product } from '@/types/Product';
 import {
@@ -43,22 +43,19 @@ export default function ProdutoList() {
   } = useGetProductsPaginatedQuery({ 
     page: page, 
     pageSize: pageSize,
-    search: searchTerm // Added search parameter
+    search: searchTerm
   });
 
   const [deleteProduct] = useDeleteProductMutation();
-  const [deletingId, setDeletingId] = useState<number | null>(null); // Fixed useState usage
+  const [deletingId] = useState<number | null>(null);
 
   const handleDelete = async (id: number) => {
-    setDeletingId(id);
     try {
       await deleteProduct(id).unwrap();
       showSuccess('Produto excluído com sucesso!');
       refetch();
     } catch (err) {
       showError('Erro ao excluir o produto');
-    } finally {
-      setDeletingId(null);
     }
   };
 
@@ -99,8 +96,6 @@ export default function ProdutoList() {
   ];
 
   const filteredData = useMemo(() => {
-    // Since we're now using search in the API call, we might not need client-side filtering
-    // But keeping it as fallback
     if (!searchTerm) return paginatedData?.data || [];
     return (
       paginatedData?.data?.filter((p: Product) =>
