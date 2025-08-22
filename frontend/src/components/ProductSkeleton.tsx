@@ -4,6 +4,7 @@ import Card from 'antd/es/card/Card';
 export const ProductSkeleton = () => {
   return (
     <Card
+      className="fade-in skeleton-pulse"
       style={{
         marginBottom: 16,
         background: 'var(--color-card)',
