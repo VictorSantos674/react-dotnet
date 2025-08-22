@@ -1,12 +1,11 @@
 import {
   useDeleteProductMutation,
-  useGetAllProductsQuery,
+  useGetProductsPaginatedQuery, // Changed from useGetAllProductsQuery
 } from '@/services/api/endpoints/productApi';
 import type { Product } from '@/types/Product';
 import {
   Table,
   Button,
-  message,
   Typography,
   Spin,
   Alert,
@@ -20,12 +19,17 @@ import type { ColumnsType } from 'antd/es/table';
 import { useState, type SetStateAction, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductTableActions from '@/components/ProductTableActions';
+import { useToast } from '@/hooks/useToast';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 const { Title } = Typography;
 
 export default function ProdutoList() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const { showSuccess, showError } = useToast();
+  const breakpoint = useBreakpoint();
+  const isMobile = breakpoint === 'mobile';
 
   const pageSize = 10;
   const [page, setPage] = useState(1);
@@ -36,19 +40,23 @@ export default function ProdutoList() {
     isError,
     error,
     refetch,
-  } = useGetAllProductsQuery({ pageNumber: page, pageSize });
+  } = useGetProductsPaginatedQuery({ 
+    page: page, 
+    pageSize: pageSize,
+    search: searchTerm // Added search parameter
+  });
 
   const [deleteProduct] = useDeleteProductMutation();
-  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null); // Fixed useState usage
 
   const handleDelete = async (id: number) => {
+    setDeletingId(id);
     try {
-      setDeletingId(id);
       await deleteProduct(id).unwrap();
-      message.success('Produto excluído com sucesso!');
+      showSuccess('Produto excluído com sucesso!');
       refetch();
-    } catch {
-      message.error('Erro ao excluir o produto.');
+    } catch (err) {
+      showError('Erro ao excluir o produto');
     } finally {
       setDeletingId(null);
     }
@@ -60,10 +68,7 @@ export default function ProdutoList() {
       dataIndex: 'nome',
       key: 'nome',
       render: (_, record) => (
-        <a
-          onClick={() => navigate(`/produtos/${record.id}`)}
-          style={{ color: 'var(--color-accent)', fontWeight: 500 }}
-        >
+        <a onClick={() => navigate(`/produtos/${record.id}`)} style={{ cursor: 'pointer' }}>
           {record.nome}
         </a>
       ),
@@ -72,11 +77,14 @@ export default function ProdutoList() {
       title: 'Preço',
       dataIndex: 'preco',
       key: 'preco',
-      render: (preco) => (
-        <span style={{ color: 'var(--color-accent)' }}>R$ {preco.toFixed(2)}</span>
-      ),
+      render: (preco) => `R$ ${preco?.toFixed(2) || '0.00'}`,
+      responsive: isMobile ? ['md'] : undefined,
     },
-    { title: 'Descrição', dataIndex: 'descricao', key: 'descricao' },
+    { 
+      title: 'Descrição',
+      dataIndex: 'descricao',
+      key: 'descricao' 
+    },
     {
       title: 'Ações',
       key: 'acoes',
@@ -91,17 +99,20 @@ export default function ProdutoList() {
   ];
 
   const filteredData = useMemo(() => {
+    // Since we're now using search in the API call, we might not need client-side filtering
+    // But keeping it as fallback
     if (!searchTerm) return paginatedData?.data || [];
     return (
-      paginatedData?.data?.filter((p: { nome: string; }) =>
+      paginatedData?.data?.filter((p: Product) =>
         p.nome.toLowerCase().includes(searchTerm.toLowerCase())
       ) || []
     );
   }, [searchTerm, paginatedData]);
 
   return (
-    <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem' }}>
+    <div className="fade-in" style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem' }}>
       <Card
+        className="slide-up card-hover"
         style={{
           background: 'var(--color-card)',
           borderRadius: '12px',
@@ -136,9 +147,7 @@ export default function ProdutoList() {
             <Input
               placeholder="Buscar por nome"
               value={searchTerm}
-              onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                setSearchTerm(e.target.value)
-              }
+              onChange={(e: { target: { value: SetStateAction<string>; }; }) => setSearchTerm(e.target.value)}
               allowClear
               style={{
                 borderRadius: '8px',

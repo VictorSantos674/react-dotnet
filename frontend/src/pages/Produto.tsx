@@ -1,23 +1,25 @@
-import { Typography, message } from 'antd';
+import { Typography } from 'antd';
 import Card from 'antd/es/card/Card';
 import ProductForm from '@/components/ProductForm';
 import { useCreateProductMutation } from '@/services/api/endpoints/productApi'; 
 import type { ProductFormValues } from '@/validations/productFormSchema';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/useToast';
 
 const { Title } = Typography;
 
 export default function Produto() {
   const [createProduct, { isLoading }] = useCreateProductMutation(); 
   const navigate = useNavigate();
+  const { showSuccess, showError } = useToast();
 
   const handleSubmit = async (data: ProductFormValues) => {
     try {
-      await createProduct(data).unwrap(); // ✅ Nome correto
-      message.success('Produto cadastrado com sucesso!');
+      await createProduct(data).unwrap();
+      showSuccess('Produto cadastrado com sucesso!');
       navigate('/produtos');
     } catch {
-      message.error('Erro ao cadastrar o produto.');
+      showError('Erro ao cadastrar o produto.');
     }
   };
 
