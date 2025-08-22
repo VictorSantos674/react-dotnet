@@ -1,5 +1,5 @@
 import Card from 'antd/es/card/Card';
-import { Form, Input, Button, Typography, Row, Col, message } from 'antd';
+import { Form, Input, Button, Typography, Row, Col } from 'antd';
 import { useRegisterMutation } from '@/services/api/endpoints/authApi'; 
 import { useDispatch } from 'react-redux';
 import { login } from '@/store/authSlice'; 
