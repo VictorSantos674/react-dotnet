@@ -1,5 +1,6 @@
 import { Button, Popconfirm, Space } from "antd";
 import { useNavigate } from "react-router-dom";
+import { withMemo } from '@/hooks/useMemoComponent';
 
 type Props = {
   id: number;
@@ -7,15 +8,15 @@ type Props = {
   loading?: boolean;
 };
 
-export default function ProductTableActions({ id, onDelete, loading }: Props) {
+const ProductTableActions = ({ id, onDelete, loading }: Props) => {
   const navigate = useNavigate();
 
   return (
     <Space>
-      <Button type="link" style={{ color: 'var(--color-accent)' }} onClick={() => navigate(`/produtos/${id}`)}>
+      <Button type="link" onClick={() => navigate(`/produtos/${id}`)}>
         Ver
       </Button>
-      <Button type="link" style={{ color: 'var(--color-secondary)' }} onClick={() => navigate(`/produtos/editar/${id}`)}>
+      <Button type="link" onClick={() => navigate(`/produtos/editar/${id}`)}>
         Editar
       </Button>
       <Popconfirm
@@ -30,4 +31,6 @@ export default function ProductTableActions({ id, onDelete, loading }: Props) {
       </Popconfirm>
     </Space>
   );
-}
+};
+
+export default withMemo(ProductTableActions);

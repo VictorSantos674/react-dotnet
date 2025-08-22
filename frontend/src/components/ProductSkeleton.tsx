@@ -1,21 +1,25 @@
-import { Skeleton, Space } from 'antd';
+import { Skeleton, Row, Col } from 'antd';
+import { withMemo } from '@/hooks/useMemoComponent';
 import Card from 'antd/es/card/Card';
 
-export const ProductSkeleton = () => {
+const ProductSkeleton = () => {
   return (
     <Card
-      className="fade-in skeleton-pulse"
       style={{
         marginBottom: 16,
         background: 'var(--color-card)',
         borderRadius: '12px',
       }}
+      className="fade-in skeleton-pulse"
     >
-      <Space direction="vertical" style={{ width: '100%' }} size="middle">
-        <Skeleton active paragraph={{ rows: 0 }} />
-        <Skeleton active paragraph={{ rows: 2 }} />
-        <Skeleton.Button active size="default" />
-      </Space>
+      <Row gutter={16} align="middle">
+        <Col span={16}>
+          <Skeleton active paragraph={{ rows: 2 }} />
+        </Col>
+        <Col span={8}>
+          <Skeleton.Button active size="small" style={{ width: '100%' }} />
+        </Col>
+      </Row>
     </Card>
   );
 };
@@ -30,4 +34,4 @@ export const ProductListSkeleton = ({ count = 4 }: { count?: number }) => {
   );
 };
 
-export default ProductSkeleton;
+export default withMemo(ProductSkeleton) && ProductSkeleton;
