@@ -1,22 +1,24 @@
-import { useAppSelector } from '@/store/authSlice';
-import { selectIsAuthenticated } from '@/store/authSlice';
+// frontend/src/components/RequireAuth.tsx
+import { useSelector } from 'react-redux';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { message } from 'antd';
+import type { RootState } from '@/store';
+import { useToast } from '@/hooks/useToast';
 import { useEffect } from 'react';
 
 export default function RequireAuth() {
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const token = useSelector((state: RootState) => state.auth.token);
   const location = useLocation();
+  const { showWarning } = useToast();
 
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     message.warning('Faça login para acessar esta página.');
-  //   }
-  // }, [isAuthenticated]);
+  useEffect(() => {
+    if (!token) {
+      showWarning('Faça login para acessar esta página.');
+    }
+  }, [token, showWarning]);
 
-  // if (!isAuthenticated) {
-  //   return <Navigate to="/login" state={{ from: location }} replace />;
-  // }
+  if (!token) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
 
   return <Outlet />;
 }
