@@ -1,18 +1,21 @@
+// frontend/src/pages/ProdutoEdit.tsx
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   useGetProductByIdQuery,
   useUpdateProductMutation
-} from '@/services/api/endpoints/productApi';
+} from '@/services/api/endpoints/productApi'; 
 import { productFormSchema, type ProductFormValues } from '@/validations/productFormSchema';
-import { Form, Input, InputNumber, Button, Typography, Spin, message } from 'antd';
+import { Form, Input, InputNumber, Button, Typography, Spin } from 'antd';
+import { useToast } from '@/hooks/useToast';
 
 const { Title } = Typography;
 
 export default function ProdutoEdit() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { showSuccess, showError } = useToast(); 
   const { data: product, isLoading, isError } = useGetProductByIdQuery(Number(id));
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
 
@@ -28,11 +31,10 @@ export default function ProdutoEdit() {
   const onSubmit = async (data: ProductFormValues) => {
     try {
       await updateProduct({ id: Number(id), ...data }).unwrap();
-      message.success('Produto atualizado com sucesso!');
+      showSuccess('Produto atualizado com sucesso!'); 
       navigate('/produtos');
     } catch (err) {
-      console.error(err);
-      message.error('Erro ao atualizar o produto.');
+      showError('Erro ao atualizar o produto.'); 
     }
   };
 
