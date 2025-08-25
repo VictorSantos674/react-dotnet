@@ -1,4 +1,4 @@
-import { lazy, Suspense, type JSX } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -18,14 +18,14 @@ const About = lazy(() => import('@/pages/About'));
 const Perfil = lazy(() => import('@/pages/Perfil'));
 const ProdutoSearch = lazy(() => import('@/pages/ProdutoSearch'));
 
-const lazyLoad = (Component: React.LazyExoticComponent<() => JSX.Element>) => (
+const lazyLoad = (Component: React.LazyExoticComponent<React.ComponentType<any>>) => (
   <Suspense fallback={<LoadingSpinner fullScreen />}>
     <Component />
   </Suspense>
 );
 
 const LandingPage = () => {
-  const token = useSelector((state: RootState) => state.auth.token);
+  const token = useSelector((state: RootState) => state.auth?.token);
   return token ? <Navigate to="/home" replace /> : <Navigate to="/login" replace />;
 };
 
@@ -59,7 +59,7 @@ const router = createBrowserRouter([
           { path: 'produtos/editar/:id', element: lazyLoad(ProdutoEdit) },
         ],
       },
-      { path: '*', element: <NotFound /> }
+      { path: '*', element: <NotFound /> },
     ],
   },
 ]);
